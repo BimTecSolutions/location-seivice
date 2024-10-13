@@ -4,11 +4,6 @@ const app = express();
 
 app.use(express.json()); // To parse JSON body requests
 
-// Route for the root URL
-app.get('/', (req, res) => {
-  res.send('Welcome to the MSpace Location Service API!');
-});
-
 // Route for Location Request
 app.post('/location', async (req, res) => {
   const { phoneNumber, requesterId, subscriberId } = req.body;
@@ -23,8 +18,8 @@ app.post('/location', async (req, res) => {
     applicationId: 'APP_001768',  // Your Application ID
     password: '729fdf8ea178cdea9857eeb9a059fd6e',  // Your password
     version: '2.0',
-    requesterId: requesterId,
-    subscriberId: subscriberId,
+    requesterId: requesterId,  // Dynamic requesterId from the Flutter frontend
+    subscriberId: subscriberId,  // Dynamic subscriberId from the Flutter frontend
     serviceType: 'IMMEDIATE'
   };
 
