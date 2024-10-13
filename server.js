@@ -4,9 +4,17 @@ const app = express();
 
 app.use(express.json()); // To parse JSON body requests
 
+// Route for the root URL
+app.get('/', (req, res) => {
+  res.send('Welcome to the MSpace Location Service API!');
+});
+
 // Route for Location Request
 app.post('/location', async (req, res) => {
   const { phoneNumber, requesterId, subscriberId } = req.body;
+
+  // Log the incoming request
+  console.log('Incoming Request:', req.body);
 
   // Check if all required fields are provided
   if (!phoneNumber || !requesterId || !subscriberId) {
@@ -18,18 +26,21 @@ app.post('/location', async (req, res) => {
     applicationId: 'APP_001768',  // Your Application ID
     password: '729fdf8ea178cdea9857eeb9a059fd6e',  // Your password
     version: '2.0',
-    requesterId: requesterId,  // Dynamic requesterId from the Flutter frontend
-    subscriberId: subscriberId,  // Dynamic subscriberId from the Flutter frontend
+    requesterId: requesterId,
+    subscriberId: subscriberId,
     serviceType: 'IMMEDIATE'
   };
 
   try {
+    console.log('Payload to MSpace:', payload); // Log the payload
+
     // Send POST request to MSpace LBS API
     const response = await axios.post('https://api.mspace.lk/lbs/request', payload, {
       headers: { 'Content-Type': 'application/json;charset=utf-8' }
     });
 
     const responseData = response.data;
+    console.log('MSpace Response:', responseData); // Log the MSpace response
 
     // Check if the API request was successful
     if (responseData.statusCode === 'S1000') {
