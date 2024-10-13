@@ -1,7 +1,7 @@
 {
   "name": "mspace-backend",
   "version": "1.0.0",
-  "description": "Backend for MSpace Location Service",
+  "description": "Backend for MSpace Location Services",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -11,6 +11,6 @@
     "axios": "^0.21.1"
   },
   "engines": {
-    "node": "14.x"  // Specify the Node.js version compatible with Heroku
+    "node": ">=14.0.0"
   }
 }
