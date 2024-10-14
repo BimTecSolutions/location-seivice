@@ -1,8 +1,13 @@
 const express = require('express');
 const axios = require('axios');
+const url = require('url');  // Import the URL module
 const app = express();
 
 app.use(express.json()); // To parse JSON body requests
+
+// Get Fixie URL from environment variables
+const fixieUrl = process.env.FIXIE_URL; // This should be set by Heroku when you add Fixie
+const parsedUrl = url.parse(fixieUrl);
 
 // Modify the root URL handler to query MSpace and display base size
 app.get('/', async (req, res) => {
@@ -13,9 +18,17 @@ app.get('/', async (req, res) => {
   };
 
   try {
-    // Send POST request to MSpace to query the base size
+    // Send POST request to MSpace to query the base size via Fixie proxy
     const response = await axios.post('https://api.mspace.lk/subscription/query-base', payload, {
-      headers: { 'Content-Type': 'application/json;charset=utf-8' }
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      proxy: {
+        host: parsedUrl.hostname,  // Use Fixie proxy hostname
+        port: parsedUrl.port,      // Use Fixie proxy port
+        auth: {
+          username: parsedUrl.auth.split(':')[0], // Fixie username
+          password: parsedUrl.auth.split(':')[1], // Fixie password
+        }
+      }
     });
 
     const responseData = response.data;
@@ -36,7 +49,6 @@ app.get('/', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
 
 // Route for Location Request
 app.post('/location', async (req, res) => {
@@ -63,9 +75,17 @@ app.post('/location', async (req, res) => {
   console.log('Payload to MSpace:', payload); // Log the payload
 
   try {
-    // Send POST request to MSpace LBS API
+    // Send POST request to MSpace LBS API via Fixie proxy
     const response = await axios.post('https://api.mspace.lk/lbs/request', payload, {
-      headers: { 'Content-Type': 'application/json;charset=utf-8' }
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.auth.split(':')[0],
+          password: parsedUrl.auth.split(':')[1],
+        }
+      }
     });
 
     const responseData = response.data;
