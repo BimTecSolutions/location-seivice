@@ -4,10 +4,39 @@ const app = express();
 
 app.use(express.json()); // To parse JSON body requests
 
-// Route for the root URL
-app.get('/', (req, res) => {
-  res.send('Welcome to the MSpace Location Service API!');
+// Modify the root URL handler to query MSpace and display base size
+app.get('/', async (req, res) => {
+  // Prepare the request payload for MSpace subscription query-base
+  const payload = {
+    applicationId: 'APP_000201',  // Your new Application ID
+    password: '39a8d1cb245029d0560619a2b388669c',  // Your new password
+  };
+
+  try {
+    // Send POST request to MSpace to query the base size
+    const response = await axios.post('https://api.mspace.lk/subscription/query-base', payload, {
+      headers: { 'Content-Type': 'application/json;charset=utf-8' }
+    });
+
+    const responseData = response.data;
+    console.log('MSpace Response:', responseData); // Log the MSpace response
+
+    // Check if the API request was successful
+    if (responseData.statusCode === 'S1000') {
+      const { baseSize } = responseData;
+      res.send(`Base Size: ${baseSize}`); // Display the base size in the response
+    } else {
+      // Handle error status codes
+      console.log('Error from MSpace:', responseData); // Log the error details
+      res.status(400).send(`Error: ${responseData.statusDetail}`);
+    }
+  } catch (error) {
+    // Log any error during the API request
+    console.error('Error fetching base size:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
+
 
 // Route for Location Request
 app.post('/location', async (req, res) => {
