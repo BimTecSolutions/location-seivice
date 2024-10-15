@@ -64,7 +64,7 @@ app.post('/location', async (req, res) => {
 
   // Prepare the request payload for MSpace API
   const payload = {
-    applicationId: 'APP_001768',  // Your Application ID
+    applicationId: 'APP_008542',  // Your Application ID
     password: '729fdf8ea178cdea9857eeb9a059fd6e',  // Your password
     version: '2.0',
     requesterId: requesterId,  // Dynamic from request
