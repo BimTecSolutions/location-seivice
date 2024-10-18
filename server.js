@@ -99,7 +99,7 @@ app.post('/subscribe', async (req, res) => {
     applicationId: 'APP_008542',  // Your Application ID
     password: 'd927d68199499f5e7114070bf88f9e6e',  // Your password
     subscriberId: `tel:94${phoneNumber.substring(1)}`,  // Format phone number
-    action: '0',  // Action 0 for subscribe
+    action: '1',  // Action 1 for subscribe
   };
 
   try {
