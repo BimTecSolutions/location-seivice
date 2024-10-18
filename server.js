@@ -14,7 +14,7 @@ app.get('/', async (req, res) => {
   // Prepare the request payload for MSpace subscription query-base
   const payload = {
     applicationId: 'APP_008542',  // Your new Application ID
-    password: '39a8d1cb245029d0560619a2b388669c',  // Your new password
+    password: 'd927d68199499f5e7114070bf88f9e6e',  // Your new password
   };
 
   try {
