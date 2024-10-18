@@ -9,18 +9,6 @@ app.use(express.json()); // To parse JSON body requests
 const fixieUrl = process.env.FIXIE_URL;
 const parsedUrl = url.parse(fixieUrl);
 
-//
-const express = require('express');
-const axios = require('axios');
-const url = require('url');
-const app = express();
-
-app.use(express.json()); // To parse JSON body requests
-
-// Get Fixie URL from environment variables (for static IP)
-const fixieUrl = process.env.FIXIE_URL;
-const parsedUrl = url.parse(fixieUrl);
-
 // Route for Base Size Query (Root URL "/")
 app.get('/', async (req, res) => {
   // Prepare the request payload for MSpace subscription query-base API
@@ -61,11 +49,6 @@ app.get('/', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
-
-//
-
-
 
 // Route for Subscription Status Check
 app.post('/checkStatus', async (req, res) => {
