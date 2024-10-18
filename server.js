@@ -56,7 +56,8 @@ app.post('/checkStatus', async (req, res) => {
   const statusPayload = {
     applicationId: 'APP_008542',  // Your Application ID
     password: 'd927d68199499f5e7114070bf88f9e6e',  // Your password
-    subscriberId: `tel:94${phoneNumber.substring(1)}`,  // Format phone number
+    subscriberId: 'tel:94713181860',
+ //   subscriberId: `tel:94${phoneNumber.substring(1)}`,  // Format phone number
   };
 
   try {
