@@ -9,6 +9,64 @@ app.use(express.json()); // To parse JSON body requests
 const fixieUrl = process.env.FIXIE_URL;
 const parsedUrl = url.parse(fixieUrl);
 
+//
+const express = require('express');
+const axios = require('axios');
+const url = require('url');
+const app = express();
+
+app.use(express.json()); // To parse JSON body requests
+
+// Get Fixie URL from environment variables (for static IP)
+const fixieUrl = process.env.FIXIE_URL;
+const parsedUrl = url.parse(fixieUrl);
+
+// Route for Base Size Query (Root URL "/")
+app.get('/', async (req, res) => {
+  // Prepare the request payload for MSpace subscription query-base API
+  const payload = {
+    applicationId: 'APP_008542',  // Your Application ID
+    password: 'd927d68199499f5e7114070bf88f9e6e',  // Your password
+  };
+
+  try {
+    // Send POST request to MSpace subscription query-base API
+    const response = await axios.post('https://api.mspace.lk/subscription/query-base', payload, {
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.auth.split(':')[0], // Fixie username
+          password: parsedUrl.auth.split(':')[1], // Fixie password
+        }
+      }
+    });
+
+    const responseData = response.data;
+    console.log('MSpace Base Size Response:', responseData);
+
+    if (responseData.statusCode === 'S1000') {
+      const { baseSize } = responseData;
+      // Display the base size in the response
+      res.send(`<h1>Base Size: ${baseSize}</h1>`);
+    } else {
+      // Handle error status codes
+      console.log('Error from MSpace:', responseData.statusDetail);
+      res.status(400).send(`Error: ${responseData.statusDetail}`);
+    }
+  } catch (error) {
+    // Log any error during the API request
+    console.error('Error fetching base size:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+//
+
+
+
 // Route for Subscription Status Check
 app.post('/checkStatus', async (req, res) => {
   const { phoneNumber } = req.body;
