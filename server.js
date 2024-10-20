@@ -49,7 +49,7 @@ app.get('/', async (req, res) => {
 app.post('/checkStatus', async (req, res) => {
   const { phoneNumber } = req.body;
   if (!phoneNumber || !phoneNumber.match(/^07\d{8}$/)) {
-    return res.status(400).json({ error: 'Invalid phone number format' });
+    return res.status(400).json({ error: 'Invalid phone number format or user unregistered' });
   }
 
   const statusPayload = {
@@ -77,12 +77,16 @@ app.post('/checkStatus', async (req, res) => {
 
     if (response.data.statusCode === 'S1000') {
       const { subscriptionStatus } = response.data;
-      res.status(200).json({ message: 'Subscription status retrieved', status: subscriptionStatus });
+      if (subscriptionStatus === 'UNREGISTERED') {
+        res.status(200).json({ message: 'User is unregistered', status: subscriptionStatus });
+      } else {
+        res.status(200).json({ message: 'Subscription status retrieved', status: subscriptionStatus });
+      }
     } else {
       res.status(400).json({ error: response.data.statusDetail });
     }
   } catch (error) {
-    console.error('Error during Subscription status check request:', error);
+    console.error('Error during Subscription status check request:', error.response ? error.response.data : error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
