@@ -49,13 +49,14 @@ app.get('/', async (req, res) => {
 app.post('/checkStatus', async (req, res) => {
   const { phoneNumber } = req.body;
   if (!phoneNumber || !phoneNumber.match(/^07\d{8}$/)) {
-    return res.status(400).json({ error: 'Invalid phone number format or user unregistered' });
+    return res.status(400).json({ error: 'Invalid phone number format' });
   }
 
+  const subscriberId = `tel:94${phoneNumber.substring(1)}`;
   const statusPayload = {
     applicationId: 'APP_008542',
     password: 'd927d68199499f5e7114070bf88f9e6e',
-    subscriberId: `tel:94${phoneNumber.substring(1)}`,
+    subscriberId: subscriberId,
   };
 
   console.log('Status Payload:', statusPayload);
@@ -90,6 +91,7 @@ app.post('/checkStatus', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 // Route to Subscribe a User
