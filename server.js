@@ -51,15 +51,15 @@ app.post('/checkStatus', async (req, res) => {
   if (!phoneNumber || !phoneNumber.match(/^07\d{8}$/)) {
     return res.status(400).json({ error: 'Invalid phone number format' });
   }
-  
+
   const statusPayload = {
     applicationId: 'APP_008542',
     password: 'd927d68199499f5e7114070bf88f9e6e',
     subscriberId: `tel:94${phoneNumber.substring(1)}`,
   };
-  
+
   console.log('Status Payload:', statusPayload);
-  
+
   try {
     const response = await axios.post('https://api.mspace.lk/subscription/getStatus', statusPayload, {
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -72,10 +72,17 @@ app.post('/checkStatus', async (req, res) => {
         },
       },
     });
-    console.log('API Response:', response.data);
-    res.status(200).json(response.data);
+
+    console.log('Full API Response:', response.data);
+
+    if (response.data.statusCode === 'S1000') {
+      const { subscriptionStatus } = response.data;
+      res.status(200).json({ message: 'Subscription status retrieved', status: subscriptionStatus });
+    } else {
+      res.status(400).json({ error: response.data.statusDetail });
+    }
   } catch (error) {
-    console.error('Error:', error.response ? error.response.data : error.message);
+    console.error('Error during Subscription status check request:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
