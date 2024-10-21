@@ -57,7 +57,7 @@ app.post('/checkStatus', async (req, res) => {
     applicationId: 'APP_008542',
     password: 'd927d68199499f5e7114070bf88f9e6e',
     subscriberId: subscriberId,    
-    version: "0",
+    version: '1.0',
   };
 
   console.log('Status Payload:', statusPayload);
