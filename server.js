@@ -53,12 +53,16 @@ app.post('/checkStatus', async (req, res) => {
   }
 
   const subscriberId = `tel:94${phoneNumber.substring(1)}`;
-  const statusPayload = {
-    applicationId: 'APP_008542',
-    password: 'd927d68199499f5e7114070bf88f9e6e',
-    subscriberId: subscriberId,    
-   // version: '2.0.',
-  };
+  const statusPayload = 
+  
+{
+  "applicationId": "APP_008542",
+  "password": "d927d68199499f5e7114070bf88f9e6e",
+  "version": "2.0",
+  "requesterId": "tel:94711275563",
+  "subscriberId": "tel:94711275563",
+  "serviceType": "IMMEDIATE"
+}
 
   console.log('Status Payload:', statusPayload);
 
