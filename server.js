@@ -20,6 +20,12 @@ app.use(express.json()); // To parse JSON body requests
 const fixieUrl = process.env.FIXIE_URL;
 const parsedUrl = url.parse(fixieUrl);
 
+const express = require('express');
+const axios = require('axios');
+const app = express();
+
+const parsedUrl = new URL(process.env.FIXIE_URL); // Ensure your Fixie URL is set in the environment variables
+
 // Route for Base Size Query (Root URL "/")
 app.get('/', async (req, res) => {
   const mobitelPayload = {
@@ -33,51 +39,56 @@ app.get('/', async (req, res) => {
   };
 
   try {
-    // Make requests to both APIs simultaneously
-    const [mobitelResponse, dialogResponse] = await Promise.all([
-      axios.post('https://api.mspace.lk/subscription/query-base', mobitelPayload, {
-        headers: { 'Content-Type': 'application/json;charset=utf-8' },
-        proxy: {
-          host: parsedUrl.hostname,
-          port: parsedUrl.port,
-          auth: {
-            username: parsedUrl.auth.split(':')[0],
-            password: parsedUrl.auth.split(':')[1],
-          },
-        },
-      }),
-      axios.post('https://api.dialog.lk/subscription/query-base', dialogPayload, {
-        headers: { 'Content-Type': 'application/json;charset=utf-8' },
-        proxy: {
-          host: parsedUrl.hostname,
-          port: parsedUrl.port,
-          auth: {
-            username: parsedUrl.auth.split(':')[0],
-            password: parsedUrl.auth.split(':')[1],
-          },
-        },
-      }),
-    ]);
+    const mobitelResponse = await axios.post('https://api.mspace.lk/subscription/query-base', mobitelPayload, {
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.auth.split(':')[0], // Fixie username
+          password: parsedUrl.auth.split(':')[1], // Fixie password
+        }
+      }
+    });
 
-    // Parse responses
+    const dialogResponse = await axios.post('https://api.dialog.lk/subscription/query-base', dialogPayload, {
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.auth.split(':')[0], // Fixie username
+          password: parsedUrl.auth.split(':')[1], // Fixie password
+        }
+      }
+    });
+
     const mobitelData = mobitelResponse.data;
     const dialogData = dialogResponse.data;
 
-    if (mobitelData.statusCode === 'S1000' && dialogData.statusCode === 'S1000') {
-      const mobitelBaseSize = mobitelData.baseSize || '0';
-      const dialogBaseSize = dialogData.baseSize || '0';
+    console.log('MSpace Base Size Response:', mobitelData);
+    console.log('Dialog Base Size Response:', dialogData);
 
-      // Render both base sizes
+    if (mobitelData.statusCode === 'S1000' && dialogData.statusCode === 'S1000') {
+      const { baseSize: mobitelBaseSize } = mobitelData;
+      const { baseSize: dialogBaseSize } = dialogData;
+
       res.send(`
         <h1>Base Sizes</h1>
-        <p><strong>Mobitel Base Size:</strong> ${mobitelBaseSize}</p>
-        <p><strong>Dialog Base Size:</strong> ${dialogBaseSize}</p>
+        <h2>Mobitel Base Size: ${mobitelBaseSize}</h2>
+        <h2>Dialog Base Size: ${dialogBaseSize}</h2>
       `);
     } else {
+      const mobitelError = mobitelData.statusDetail || 'Unknown error';
+      const dialogError = dialogData.statusDetail || 'Unknown error';
+      
+      console.log('Error from MSpace:', mobitelError);
+      console.log('Error from Dialog:', dialogError);
+
       res.status(400).send(`
-        <h1>Error</h1>
-        <p>Mobitel Error: ${mobitelData.statusDetail || 'Unknown error'}</p>
-        <p>Dialog Error: ${dialogData.statusDetail || 'Unknown error'}</p>
+        <h1>Errors</h1>
+        <p>Mobitel Error: ${mobitelError}</p>
+        <p>Dialog Error: ${dialogError}</p>
       `);
     }
   } catch (error) {
@@ -85,6 +96,9 @@ app.get('/', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
+
 
 
 
