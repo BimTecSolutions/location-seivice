@@ -12,8 +12,8 @@ const parsedUrl = url.parse(fixieUrl);
 // Route for Base Size Query (Root URL "/")
 app.get('/', async (req, res) => {
   const payload = {
-    applicationId: 'APP_064837',  // Your Application ID
-    password: '8c1a5d4b5f9ac2fb04788a0efdaeafa0',  // Your password
+    applicationId: 'APP_066319',  // Your Application ID
+    password: 'c182dd009972ed36c0734af861b596dc',  // Your password
   }; 
 
   try {
