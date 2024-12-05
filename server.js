@@ -12,12 +12,12 @@ const parsedUrl = url.parse(fixieUrl);
 // Route for Base Size Query (Root URL "/")
 app.get('/', async (req, res) => {
   const payload = {
-    applicationId: 'APP_066339',  // Your Application ID
-    password: 'eaedf181a9bb4c4ab075cadcc51de6bf',  // Your password
+    applicationId: 'APP_064837',  // Your Application ID
+    password: '8c1a5d4b5f9ac2fb04788a0efdaeafa0',  // Your password
   }; 
 
   try {
-    const response = await axios.post('https://api.dialog.lk/ subscription/query-base', payload, {
+    const response = await axios.post('https://api.dialog.lk/subscription/query-base', payload, {
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       proxy: {
         host: parsedUrl.hostname,
