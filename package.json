@@ -1,7 +1,7 @@
 {
   "name": "mspace-backend",
-  "version": "1.0.0",
-  "description": "Backend for MSpace Location Services",
+  "version": "1.1.0",
+  "description": "Backend for MSpace Location Services including Dialog and Mobitel base size queries",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
