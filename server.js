@@ -17,7 +17,7 @@ app.get('/', async (req, res) => {
   }; 
 
   try {
-    const response = await axios.post('https://api.dialog.lk/subscription/query-base', payload, {
+    const response = await axios.post('https://api.dialog.lk/ subscription/query-base', payload, {
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       proxy: {
         host: parsedUrl.hostname,
