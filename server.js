@@ -9,7 +9,7 @@ app.use(express.json()); // To parse JSON body requests
 const fixieUrl = process.env.FIXIE_URL;
 const parsedUrl = new URL(fixieUrl); // Parsing the Fixie URL
 
-// Route for Mobitel MSpace Base Size Query (Root URL "/")
+// Route for Mobitel MSpace Base Size Query (Root URL "/mobitel")
 app.get('/mobitel', async (req, res) => {
   const mobitelPayload = {
     applicationId: 'APP_008542',  // Mobitel Application ID
@@ -53,7 +53,7 @@ app.get('/mobitel', async (req, res) => {
   }
 });
 
-// Route for Dialog Ideamart Base Size Query
+// Route for Dialog Ideamart Base Size Query (Root URL "/dialog")
 app.get('/dialog', async (req, res) => {
   const dialogPayload = {
     applicationId: 'APP_066319',  // Dialog Application ID
@@ -96,6 +96,20 @@ app.get('/dialog', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+// Root URL route
+app.get('/', (req, res) => {
+  res.send(`
+    <h1>Welcome to Base Size Query Service</h1>
+    <p>Use the following endpoints to get base sizes:</p>
+    <ul>
+      <li><a href="/mobitel">Mobitel Base Size</a></li>
+      <li><a href="/dialog">Dialog Base Size</a></li>
+    </ul>
+  `);
+});
+
+
 
 
 
