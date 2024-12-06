@@ -104,7 +104,7 @@ app.get('/check-status', async (req, res) => {
     password: 'c182dd009972ed36c0734af861b596dc',  // Dialog password for status check
     subscriberId: 'tel:94767544774',  // Corrected Subscriber ID format
     version: '1.0',
-    requesterId: 'tel:94767544774,
+  //  requesterId: 'tel:94767544774,
   };
 
   try {
@@ -137,7 +137,7 @@ app.get('/check-mobitel-status', async (req, res) => {
     password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password for status check
     subscriberId: 'tel:94713181860',  // Example Subscriber ID
     version: '1.0',
-    requesterId: 'tel:94713181860',
+ //   requesterId: 'tel:94713181860',
   };
 
   try {
