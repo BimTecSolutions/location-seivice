@@ -97,17 +97,73 @@ app.get('/dialog', async (req, res) => {
   }
 });
 
+
+// Route for Dialog Subscription Status Query (Root URL "/check-status")
+app.get('/check-status', async (req, res) => {
+  const statusPayload = {
+    applicationId: 'APP_001807',  // Dialog Application ID for status check
+    password: 'cf2b9e361c13bc54b86d3c8180b0fd242',  // Dialog password for status check
+    subscriberId: 'te:94771234567'  // Subscriber ID
+  };
+
+  try {
+    const statusResponse = await axios.post('https://api.dialog.lk/subscription/getStatus', statusPayload, {
+      headers: { 'Content-Type': 'application/json' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.username, // Fixie username
+          password: parsedUrl.password, // Fixie password
+        }
+      }
+    });
+
+    const statusData = statusResponse.data;
+    res.json(statusData);  // Send the status data as JSON
+
+  } catch (error) {
+    console.error('Error fetching subscription status:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 // Root URL route
 app.get('/', (req, res) => {
   res.send(`
     <h1>Welcome to Base Size Query Service</h1>
-    <p>Use the following endpoints to get base sizes:</p>
+    <p>Use the following endpoints to get base sizes and subscription status:</p>
     <ul>
       <li><a href="/mobitel">Mobitel Base Size</a></li>
       <li><a href="/dialog">Dialog Base Size</a></li>
     </ul>
+    <h2>Dialog Subscription Status</h2>
+    <button onclick="checkSubscriptionStatus()">Check Subscription Status</button>
+    <div id="statusResult"></div>
+    <script>
+      async function checkSubscriptionStatus() {
+        try {
+          const response = await fetch('/check-status');
+          const result = await response.json();
+          document.getElementById('statusResult').innerHTML = \`
+            <h3>Subscription Status</h3>
+            <p>Version: \${result.version}</p>
+            <p>Status: \${result.subscriptionStatus}</p>
+            <p>Status Code: \${result.statusCode}</p>
+            <p>Details: \${result.statusDetail}</p>
+          \`;
+        } catch (error) {
+          document.getElementById('statusResult').innerHTML = '<p>Error fetching subscription status</p>';
+          console.error('Error:', error);
+        }
+      }
+    </script>
   `);
 });
+
+
+
 
 
 
