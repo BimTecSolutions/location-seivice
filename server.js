@@ -98,16 +98,23 @@ app.get('/dialog', async (req, res) => {
 });
 
 
-// Route for Dialog Subscription Status Query (Root URL "/check-status")
-app.get('/check-status', async (req, res) => {
-  const statusPayload = {
-    applicationId: 'APP_066319',  // Dialog Application ID for status check
-    password: 'c182dd009972ed36c0734af861b596dc',  // Dialog password for status check
-    subscriberId: 'tel:+94767544774'  // Subscriber ID
+// Route for Dialog Detailed Subscription Status Query (Root URL "/check-detailed-status")
+app.get('/check-detailed-status', async (req, res) => {
+  const detailedStatusPayload = {
+    applicationId: 'APP_066319',  // Dialog Application ID for detailed status check
+    password: 'c182dd009972ed36c0734af861b596dc',  // Dialog password for detailed status check
+    subscriberId: 'tel:94767544774',  // Corrected Subscriber ID format
+    applicationHash: 'abcdefgh',
+    applicationMetaData: {
+      client: 'MOBILEAPP',
+      device: 'Samsung S10',
+      os: 'android 8',
+      appCode: 'https://play.google.com/store/apps/details?id=lk'
+    }
   };
 
   try {
-    const statusResponse = await axios.post('https://api.dialog.lk/subscription/getStatus', statusPayload, {
+    const detailedStatusResponse = await axios.post('https://api.dialog.lk/subscription/getStatus', detailedStatusPayload, {
       headers: { 'Content-Type': 'application/json' },
       proxy: {
         host: parsedUrl.hostname,
@@ -119,11 +126,11 @@ app.get('/check-status', async (req, res) => {
       }
     });
 
-    const statusData = statusResponse.data;
-    res.json(statusData);  // Send the status data as JSON
+    const detailedStatusData = detailedStatusResponse.data;
+    res.json(detailedStatusData);  // Send the status data as JSON
 
   } catch (error) {
-    console.error('Error fetching subscription status:', error);
+    console.error('Error fetching detailed subscription status:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -141,6 +148,9 @@ app.get('/', (req, res) => {
     <h2>Dialog Subscription Status</h2>
     <button onclick="checkSubscriptionStatus()">Check Subscription Status</button>
     <div id="statusResult"></div>
+    <h2>Detailed Dialog Subscription Status</h2>
+    <button onclick="checkDetailedSubscriptionStatus()">Check Detailed Subscription Status</button>
+    <div id="detailedStatusResult"></div>
     <script>
       async function checkSubscriptionStatus() {
         try {
@@ -158,9 +168,27 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
+
+      async function checkDetailedSubscriptionStatus() {
+        try {
+          const response = await fetch('/check-detailed-status');
+          const result = await response.json();
+          document.getElementById('detailedStatusResult').innerHTML = \`
+            <h3>Detailed Subscription Status</h3>
+            <p>Version: \${result.version}</p>
+            <p>Status: \${result.subscriptionStatus}</p>
+            <p>Status Code: \${result.statusCode}</p>
+            <p>Details: \${result.statusDetail}</p>
+          \`;
+        } catch (error) {
+          document.getElementById('detailedStatusResult').innerHTML = '<p>Error fetching detailed subscription status</p>';
+          console.error('Error:', error);
+        }
+      }
     </script>
   `);
 });
+
 
 
 
