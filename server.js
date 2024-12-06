@@ -290,9 +290,12 @@ app.get('/', (req, res) => {
     <h2>Mobitel Location Request</h2>
     <button onclick="requestLocation()">Request Location</button>
     <div id="locationResult"></div>
-    <h2>Mobitel Subscription Action</h2>
-    <button onclick="sendSubscriptionAction()">Send Subscription Action</button>
-    <div id="subscriptionActionResult"></div>
+    
+<h2>Mobitel Subscription Action</h2>
+<button onclick="sendSubscriptionAction()">Send Subscription Action</button>
+<div id="subscriptionActionResult"></div>
+
+    
     <script>
   
       async function checkSubscriptionStatus() {
@@ -378,6 +381,33 @@ app.get('/', (req, res) => {
       }
 
 
+async function sendSubscriptionAction() {
+  try {
+    const response = await fetch('/send-subscription-action', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        applicationId: "APP_999999",
+        password: "95904999aa8edb0c038b3295fdd271de",
+        subscriberId: "tel:94716177301",
+        action: "0"
+      })
+    });
+    const result = await response.json();
+    document.getElementById('subscriptionActionResult').innerHTML = `
+      <h3>Subscription Action Result</h3>
+      <p>Version: ${result.version}</p>
+      <p>Status Code: ${result.statusCode}</p>
+      <p>Details: ${result.statusDetail}</p>
+      <p>Subscription Status: ${result.subscriptionStatus}</p>
+    `;
+  } catch (error) {
+    document.getElementById('subscriptionActionResult').innerHTML = '<p>Error sending subscription action</p>';
+    console.error('Error:', error);
+  }
+}
 
       
     </script>
