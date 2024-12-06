@@ -332,33 +332,8 @@ app.get('/', (req, res) => {
 
     
     <script>
-      async function getSubscriberList() {
-  try {
-    const response = await fetch('/get-subscriber-list', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        applicationId: "APP_008542",
-        password: "d927d68199499f5e7114070bf88f9e6e",
-        version: "1.0",
-        requestPage: 2
-      })
-    });
-    const result = await response.json();
-    document.getElementById('subscriberListResult').innerHTML = `
-      <h3>Subscriber List</h3>
-      <pre>${JSON.stringify(result, null, 2)}</pre>
-    `;
-  } catch (error) {
-    document.getElementById('subscriberListResult').innerHTML = '<p>Error fetching subscriber list</p>';
-    console.error('Error:', error);
-  }
-}
 
- 
-      async function requestOTP() {
+     async function requestOTP() {
         try {
           const response = await fetch('/request-otp');
           const result = await response.json();
@@ -374,6 +349,7 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
+      
       async function verifyOTP(event) {
         event.preventDefault();
         const otp = document.getElementById('otp').value;
