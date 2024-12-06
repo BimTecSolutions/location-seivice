@@ -338,10 +338,10 @@ app.get('/', (req, res) => {
 //////////////////////////////////
 
    const requestData = {
-      applicationId: "APP_999999",
-      password: "95904999aa8edb0c038b3295fdd271de",
-      subscriberId: "tel:94716177301",
-      action: "0"
+      applicationId: "APP_008542",
+      password: "d927d68199499f5e7114070bf88f9e6e",
+      subscriberId: "tel:94713181860",
+      action: "1"
     };
 
     // URL of the API endpoint
