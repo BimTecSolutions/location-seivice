@@ -18,7 +18,7 @@ app.get('/mobitel', async (req, res) => {
 
   try {
     const mobitelResponse = await axios.post('https://api.mspace.lk/subscription/query-base', mobitelPayload, {
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      headers: { 'Content-Type': 'application/json' },
       proxy: {
         host: parsedUrl.hostname,
         port: parsedUrl.port,
@@ -62,7 +62,7 @@ app.get('/dialog', async (req, res) => {
 
   try {
     const dialogResponse = await axios.post('https://api.dialog.lk/subscription/query-base', dialogPayload, {
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       proxy: {
         host: parsedUrl.hostname,
         port: parsedUrl.port,
@@ -108,6 +108,7 @@ app.get('/', (req, res) => {
     </ul>
   `);
 });
+
 
 
 
