@@ -105,7 +105,7 @@ app.get('/request-otp', async (req, res) => {
   const otpRequestPayload = {
     applicationId: 'APP_008542',  // MSpace Application ID
     password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
-    subscriberId: 'tel:94767544774',  // Example Subscriber ID
+    subscriberId: 'tel:94713181860',  // Example Subscriber ID
     applicationHash: 'abcdefgh',
     applicationMetaData: {
       client: 'MOBILEAPP',
