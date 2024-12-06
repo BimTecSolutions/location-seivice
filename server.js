@@ -176,9 +176,9 @@ app.get('/check-mobitel-status', async (req, res) => {
 // Route for OTP Request (Root URL "/request-otp")
 app.get('/request-otp', async (req, res) => {
   const otpRequestPayload = {
-    applicationId: 'APP_000375',  // MSpace Application ID
-    password: 'a07118cda5215fc6d01db5b2ab848edd',  // MSpace password
-    subscriberId: 'tel:94716177301',  // Example Subscriber ID
+    applicationId: 'APP_008542',  // MSpace Application ID
+    password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
+    subscriberId: 'tel:94713181860',  // Example Subscriber ID
     applicationHash: 'abcdefgh',
     applicationMetaData: {
       client: 'MOBILEAPP',
