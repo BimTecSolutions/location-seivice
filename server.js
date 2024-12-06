@@ -259,10 +259,12 @@ app.get('/', (req, res) => {
     <h2>Mobitel Location Request</h2>
     <button onclick="requestLocation()">Request Location</button>
     <div id="locationResult"></div>
-    
- <h2>Mobitel Subscription Action</h2>
+
+
+<h2>Mobitel Subscription Action</h2>
 <button onclick="sendSubscriptionAction()">Send Subscription Action</button>
 <div id="subscriptionActionResult"></div>
+
 
     
     <script>
@@ -312,27 +314,23 @@ app.get('/', (req, res) => {
       }
 
     ////////////////////////////
-    
-      async function requestLocation() {
-        try {
-          const response = await fetch('/request-location');
-          const result = await response.json();
-          document.getElementById('locationResult').innerHTML = \`
-            <h3>Location Data</h3>
-            <p>Version: \${result.version}</p>
-            <p>Message ID: \${result.messageID}</p>
-            <p>Latitude: \${result.latitude}</p>
-            <p>Longitude: \${result.longitude}</p>
-            <p>Subscriber State: \${result.subscriberState}</p>
-            <p>Timestamp: \${result.timestamp}</p>
-            <p>Status Code: \${result.statusCode}</p>
-            <p>Details: \${result.statusDetail}</p>
-          \`;
-        } catch (error) {
-          document.getElementById('locationResult').innerHTML = '<p>Error fetching location data</p>';
-          console.error('Error:', error);
-        }
-      }
+async function sendSubscriptionAction() {
+  try {
+    const response = await fetch('/send-subscription-action');
+    const result = await response.json();
+    document.getElementById('subscriptionActionResult').innerHTML = `
+      <h3>Subscription Action Result</h3>
+      <p>Version: ${result.version}</p>
+      <p>Status Code: ${result.statusCode}</p>
+      <p>Details: ${result.statusDetail}</p>
+      <p>Subscription Status: ${result.subscriptionStatus}</p>
+    `;
+  } catch (error) {
+    document.getElementById('subscriptionActionResult').innerHTML = '<p>Error sending subscription action</p>';
+    console.error('Error:', error);
+  }
+}
+
 //////////////////////////////
 
       async function sendSubscriptionAction() {
