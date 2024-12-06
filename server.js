@@ -8,8 +8,6 @@ app.use(express.json()); // To parse JSON body requests
 // Get Fixie URL from environment variables (for static IP)
 const fixieUrl = process.env.FIXIE_URL;
 
-const parsedUrl = URL(process.env.FIXIE_URL); // Ensure your Fixie URL is set in the environment variables
-
 // Route for Base Size Query (Root URL "/")
 app.get('/', async (req, res) => {
   const mobitelPayload = {
