@@ -137,7 +137,7 @@ app.get('/check-mobitel-status', async (req, res) => {
 
   "applicationId": "APP_008542",
   "password": "d927d68199499f5e7114070bf88f9e6e",
-  "subscriberId": "tel:94703181860",
+  "subscriberId": "tel:94713181860",
   "applicationHash": "abcdefgh",
   "applicationMetaData": {
     "client": "MOBILEAPP",
@@ -173,6 +173,76 @@ app.get('/check-mobitel-status', async (req, res) => {
 });
 
 
+// Route for OTP Request (Root URL "/request-otp")
+app.get('/request-otp', async (req, res) => {
+  const otpRequestPayload = {
+    applicationId: 'APP_000375',  // MSpace Application ID
+    password: 'a07118cda5215fc6d01db5b2ab848edd',  // MSpace password
+    subscriberId: 'tel:94716177301',  // Example Subscriber ID
+    applicationHash: 'abcdefgh',
+    applicationMetaData: {
+      client: 'MOBILEAPP',
+      device: 'Samsung S10',
+      os: 'android 8',
+      appCode: 'https://play.google.com/store/apps/details?id=lk'
+    }
+  };
+
+  try {
+    const otpRequestResponse = await axios.post('https://api.mspace.lk/otp/request', otpRequestPayload, {
+      headers: { 'Content-Type': 'application/json' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.username, // Fixie username
+          password: parsedUrl.password, // Fixie password
+        }
+      }
+    });
+
+    const otpRequestData = otpRequestResponse.data;
+    res.json(otpRequestData);  // Send the OTP request data as JSON
+
+  } catch (error) {
+    console.error('Error requesting OTP:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Route for OTP Verification (Root URL "/verify-otp")
+app.post('/verify-otp', async (req, res) => {
+  const { referenceNo, otp } = req.body;
+  const otpVerifyPayload = {
+    applicationId: 'APP_008542',  // MSpace Application ID
+    password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
+    referenceNo,  // Reference number from OTP request
+    otp  // OTP entered by user
+  };
+
+  try {
+    const otpVerifyResponse = await axios.post('https://api.mspace.lk/otp/verify', otpVerifyPayload, {
+      headers: { 'Content-Type': 'application/json' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.username, // Fixie username
+          password: parsedUrl.password, // Fixie password
+        }
+      }
+    });
+
+    const otpVerifyData = otpVerifyResponse.data;
+    res.json(otpVerifyData);  // Send the OTP verification data as JSON
+
+  } catch (error) {
+    console.error('Error verifying OTP:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 
 // Root URL route
 app.get('/', (req, res) => {
@@ -189,6 +259,14 @@ app.get('/', (req, res) => {
     <h2>Mobitel Subscription Status</h2>
     <button onclick="checkMobitelSubscriptionStatus()">Check Mobitel Subscription Status</button>
     <div id="mobitelStatusResult"></div>
+    <h2>OTP Request and Verification</h2>
+    <button onclick="requestOTP()">Request OTP</button>
+    <div id="otpRequestResult"></div>
+    <form id="otpForm" style="display:none;" onsubmit="return verifyOTP(event)">
+      <input type="text" id="otp" name="otp" placeholder="Enter OTP" required>
+      <button type="submit">Verify OTP</button>
+    </form>
+    <div id="otpVerifyResult"></div>
     <script>
       async function checkSubscriptionStatus() {
         try {
@@ -223,9 +301,54 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
+
+      async function requestOTP() {
+        try {
+          const response = await fetch('/request-otp');
+          const result = await response.json();
+          document.getElementById('otpRequestResult').innerHTML = \`
+            <h3>OTP Requested</h3>
+            <p>Reference No: \${result.referenceNo}</p>
+            <p>Status Code: \${result.statusCode}</p>
+            <p>Details: \${result.statusDetail}</p>
+          \`;
+          document.getElementById('otpForm').style.display = 'block';
+        } catch (error) {
+          document.getElementById('otpRequestResult').innerHTML = '<p>Error requesting OTP</p>';
+          console.error('Error:', error);
+        }
+      }
+
+      async function verifyOTP(event) {
+        event.preventDefault();
+        const otp = document.getElementById('otp').value;
+        const referenceNo = document.querySelector('#otpRequestResult p:nth-child(2)').innerText.split(': ')[1];
+        try {
+          const response = await fetch('/verify-otp', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              referenceNo,
+              otp
+            })
+          });
+          const result = await response.json();
+          document.getElementById('otpVerifyResult').innerHTML = \`
+            <h3>OTP Verification</h3>
+            <p>Status Code: \${result.statusCode}</p>
+            <p>Details: \${result.statusDetail}</p>
+          \`;
+        } catch (error) {
+          document.getElementById('otpVerifyResult').innerHTML = '<p>Error verifying OTP</p>';
+          console.error('Error:', error);
+        }
+      }
     </script>
   `);
 });
+
 
 
 
