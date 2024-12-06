@@ -7,22 +7,6 @@ app.use(express.json()); // To parse JSON body requests
 
 // Get Fixie URL from environment variables (for static IP)
 const fixieUrl = process.env.FIXIE_URL;
-const parsedUrl = url.parse(fixieUrl);
-
-const express = require('express');
-const axios = require('axios');
-const url = require('url');
-const app = express();
-
-app.use(express.json()); // To parse JSON body requests
-
-// Get Fixie URL from environment variables (for static IP)
-const fixieUrl = process.env.FIXIE_URL;
-const parsedUrl = url.parse(fixieUrl);
-
-const express = require('express');
-const axios = require('axios');
-const app = express();
 
 const parsedUrl = new URL(process.env.FIXIE_URL); // Ensure your Fixie URL is set in the environment variables
 
