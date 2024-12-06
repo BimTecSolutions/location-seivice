@@ -62,7 +62,7 @@ app.get('/dialog', async (req, res) => {
 
   try {
     const dialogResponse = await axios.post('https://api.dialog.lk/subscription/query-base', dialogPayload, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: { 'Content-Type': 'application/json' },
       proxy: {
         host: parsedUrl.hostname,
         port: parsedUrl.port,
@@ -108,6 +108,9 @@ app.get('/', (req, res) => {
     </ul>
   `);
 });
+
+
+
 
 
 
