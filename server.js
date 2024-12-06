@@ -209,7 +209,7 @@ app.post('/send-subscription-action', async (req, res) => {
     password: 'd927d68199499f5e7114070bf88f9e6e',
     subscriberId: 'tel:94713181860',
     requesterId: 'tel:94713181860', 
-    action: '0'
+    action: '1'
   };
 
   try {
@@ -367,6 +367,7 @@ app.get('/', (req, res) => {
               applicationId: "APP_008542",
               password: "d927d68199499f5e7114070bf88f9e6e",
               subscriberId: "tel:94713181860",
+              requesterId: 'tel:94713181860', 
               action: "1"
             })
           });
