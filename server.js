@@ -9,15 +9,15 @@ app.use(express.json()); // To parse JSON body requests
 const fixieUrl = process.env.FIXIE_URL;
 const parsedUrl = new URL(fixieUrl); // Parsing the Fixie URL
 
-// Route for Base Size Query (Root URL "/")
-app.get('/', async (req, res) => {
+// Route for Mobitel MSpace Base Size Query (Root URL "/")
+app.get('/mobitel', async (req, res) => {
   const mobitelPayload = {
-    applicationId: 'APP_066319',  // Mobitel Application ID
-    password: 'c182dd009972ed36c0734af861b596dc',  // Mobitel password
+    applicationId: 'APP_008542',  // Mobitel Application ID
+    password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password
   };
 
   try {
-    const mobitelResponse = await axios.post('https://api.dialog.lk/subscription/query-base', mobitelPayload, {
+    const mobitelResponse = await axios.post('https://api.mspace.lk/subscription/query-base', mobitelPayload, {
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       proxy: {
         host: parsedUrl.hostname,
@@ -52,6 +52,53 @@ app.get('/', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+// Route for Dialog Ideamart Base Size Query
+app.get('/dialog', async (req, res) => {
+  const dialogPayload = {
+    applicationId: 'APP_066319',  // Dialog Application ID
+    password: 'c182dd009972ed36c0734af861b596dc',  // Dialog password
+  };
+
+  try {
+    const dialogResponse = await axios.post('https://api.dialog.lk/subscription/query-base', dialogPayload, {
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.username, // Fixie username
+          password: parsedUrl.password, // Fixie password
+        }
+      }
+    });
+
+    const dialogData = dialogResponse.data;
+
+    console.log('Dialog Base Size Response:', dialogData);
+
+    if (dialogData.statusCode === 'S1000') {
+      const { baseSize } = dialogData;
+
+      res.send(`
+        <h1>Dialog Base Size</h1>
+        <h2>Base Size: ${baseSize}</h2>
+      `);
+    } else {
+      const dialogError = dialogData.statusDetail || 'Unknown error';
+      
+      console.log('Error from Dialog:', dialogError);
+
+      res.status(400).send(`Error: ${dialogError}`);
+    }
+  } catch (error) {
+    console.error('Error fetching base size:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
 
 
 
