@@ -101,9 +101,9 @@ app.get('/dialog', async (req, res) => {
 // Route for Dialog Subscription Status Query (Root URL "/check-status")
 app.get('/check-status', async (req, res) => {
   const statusPayload = {
-    applicationId: 'APP_001807',  // Dialog Application ID for status check
-    password: 'cf2b9e361c13bc54b86d3c8180b0fd242',  // Dialog password for status check
-    subscriberId: 'te:94771234567'  // Subscriber ID
+    applicationId: 'APP_066319',  // Dialog Application ID for status check
+    password: 'c182dd009972ed36c0734af861b596dc',  // Dialog password for status check
+    subscriberId: 'te:94767544774'  // Subscriber ID
   };
 
   try {
