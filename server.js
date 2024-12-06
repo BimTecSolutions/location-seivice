@@ -102,9 +102,9 @@ app.get('/check-status', async (req, res) => {
   const statusPayload = {
     applicationId: 'APP_066319',  // Dialog Application ID for status check
     password: 'c182dd009972ed36c0734af861b596dc',  // Dialog password for status check
-    subscriberId: 'tel:+94767544774',  // Corrected Subscriber ID format
-    version: '2.0',
-  //  requesterId: 'tel:94767544774,
+    subscriberId: 'tel:94767544774',  // Corrected Subscriber ID format
+    version: '1.0',
+    requesterId: 'tel:94767544774,
   };
 
   try {
