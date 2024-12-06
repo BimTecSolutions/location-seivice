@@ -101,8 +101,8 @@ app.get('/dialog', async (req, res) => {
 app.get('/check-status', async (req, res) => {
   const statusPayload = {
     applicationId: 'APP_066319',  // Dialog Application ID for status check
-    password: 'c182dd009972ed36c0734af861b596dc2',  // Dialog password for status check
-    subscriberId: 'tel:94767544774'  // Corrected Subscriber ID format
+    password: 'c182dd009972ed36c0734af861b596dc',  // Dialog password for status check
+    subscriberId: 'tel:94777544774'  // Corrected Subscriber ID format
   };
 
   try {
@@ -132,8 +132,8 @@ app.get('/check-status', async (req, res) => {
 app.get('/check-mobitel-status', async (req, res) => {
   const mobitelStatusPayload = {
     applicationId: 'APP_008542',  // Mobitel Application ID for status check
-    password: 'd927d68199499f5e7114070bf88f9e6e2',  // Mobitel password for status check
-    subscriberId: 'tel:94713181860'  // Example Subscriber ID
+    password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password for status check
+    subscriberId: 'tel:94703181860'  // Example Subscriber ID
   };
 
   try {
