@@ -338,33 +338,7 @@ app.get('/', (req, res) => {
     <button onclick="sendSubscriptionAction()">Send Subscription Action</button>
     <div id="subscriptionActionResult"></div>
     <script>
-      async function sendSubscriptionAction() {
-        try {
-          const response = await fetch('/send-subscription-action', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              applicationId: "APP_008542",  // Removed extra space
-              password: "d927d68199499f5e7114070bf88f9e6e",
-              subscriberId: "tel:94713181860",
-              action: "0"
-            })
-          });
-          const result = await response.json();
-          document.getElementById('subscriptionActionResult').innerHTML = `
-            <h3>Subscription Action Result</h3>
-            <p>Version: ${result.version}</p>
-            <p>Status Code: ${result.statusCode}</p>
-            <p>Details: ${result.statusDetail}</p>
-            <p>Subscription Status: ${result.subscriptionStatus}</p>
-          `;
-        } catch (error) {
-          document.getElementById('subscriptionActionResult').innerHTML = '<p>Error sending subscription action</p>';
-          console.error('Error:', error);
-        }
-      }
+  
       async function checkSubscriptionStatus() {
         try {
           const response = await fetch('/check-status');
