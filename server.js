@@ -133,15 +133,25 @@ app.get('/check-status', async (req, res) => {
 // Route for Mobitel Subscription Status Query (Root URL "/check-mobitel-status")
 app.get('/check-mobitel-status', async (req, res) => {
   const mobitelStatusPayload = {
-    applicationId: 'APP_008542',  // Mobitel Application ID for status check
-    password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password for status check
-    subscriberId: 'tel:94713181860',  // Example Subscriber ID
-//    version: '2.0',
- //   requesterId: 'tel:94713181860',
+
+
+  "applicationId": "APP_008542",
+  "password": "d927d68199499f5e7114070bf88f9e6e",
+  "subscriberId": "tel:94713181860",
+  "applicationHash": "abcdefgh",
+  "applicationMetaData": {
+    "client": "MOBILEAPP",
+    "device": "Samsung S10",
+    "os": "android 8",
+    "appCode": "https://play.google.com/store/apps/details?id=lk"
+  }
+
+
+    
   };
 
   try {
-    const mobitelStatusResponse = await axios.post('https://api.mspace.lk/subscription/getStatus', mobitelStatusPayload, {
+    const mobitelStatusResponse = await axios.post('https://api.mspace.lk/otp/request', mobitelStatusPayload, {
       headers: { 'Content-Type': 'application/json' },
       proxy: {
         host: parsedUrl.hostname,
