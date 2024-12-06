@@ -260,11 +260,6 @@ app.get('/', (req, res) => {
     <button onclick="requestLocation()">Request Location</button>
     <div id="locationResult"></div>
     
-
-  <h1>Send POST Request</h1>
-  <button id="sendRequest">Send Request</button>
-  <h2>Response:</h2>
-  <pre id="output">Waiting for response...</pre>
  
     
     <script>
@@ -335,52 +330,7 @@ app.get('/', (req, res) => {
         }
       }
 
-//////////////////////////////////
 
-   const requestData = {
-      applicationId: "APP_008542",
-      password: "d927d68199499f5e7114070bf88f9e6e",
-      subscriberId: "tel:94713181860",
-      action: "1"
-    };
-
-    // URL of the API endpoint
-    const url = "https://api.mspace.lk/subscription/send";
-
-    // Function to send the POST request and display the response
-    async function sendPostRequest() {
-      try {
-        const response = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json;charset=utf-8", // Ensures the correct content type
-          },
-          body: JSON.stringify(requestData), // Convert the data to JSON string
-        });
-
-        if (response.ok) {
-          const responseData = await response.json(); // Parse the JSON response
-          console.log("Success:", responseData);
-
-          // Display the response data in a user-friendly format
-          const outputElement = document.getElementById("output");
-          outputElement.textContent = JSON.stringify(responseData, null, 2); // Pretty-print JSON
-        } else {
-          console.error("Request failed with status:", response.status);
-          document.getElementById("output").textContent =
-            "Request failed with status: " + response.status;
-        }
-      } catch (error) {
-        console.error("Error occurred:", error);
-        document.getElementById("output").textContent =
-          "Error occurred: " + error.message;
-      }
-    }
-
-    // Add event listener to the button
-    document.getElementById("sendRequest").addEventListener("click", sendPostRequest);
-    
-  //////////////////////////////////    
     </script>
   `);
 });
