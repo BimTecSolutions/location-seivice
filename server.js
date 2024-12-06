@@ -242,6 +242,38 @@ app.post('/verify-otp', async (req, res) => {
   }
 });
 
+// Route for Location Request (Root URL "/request-location")
+app.get('/request-location', async (req, res) => {
+  const locationRequestPayload = {
+    applicationId: 'APP_008542',  // MSpace Application ID
+    password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
+    version: '2.0',
+    requesterId: 'tel:94713181860',  // Example Requester ID
+    subscriberId: 'tel:94713181860',  // Example Subscriber ID
+    serviceType: 'IMMEDIATE'
+  };
+
+  try {
+    const locationRequestResponse = await axios.post('https://api.mspace.lk/lbs/request', locationRequestPayload, {
+      headers: { 'Content-Type': 'application/json' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.username, // Fixie username
+          password: parsedUrl.password, // Fixie password
+        }
+      }
+    });
+
+    const locationRequestData = locationRequestResponse.data;
+    res.json(locationRequestData);  // Send the location request data as JSON
+
+  } catch (error) {
+    console.error('Error fetching location data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 // Root URL route
@@ -267,6 +299,10 @@ app.get('/', (req, res) => {
       <button type="submit">Verify OTP</button>
     </form>
     <div id="otpVerifyResult"></div>
+    <h2>Mobitel Location Request</h2>
+<button onclick="requestLocation()">Request Location</button>
+<div id="locationResult"></div>
+
     <script>
       async function checkSubscriptionStatus() {
         try {
@@ -345,6 +381,29 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
+
+
+      async function requestLocation() {
+  try {
+    const response = await fetch('/request-location');
+    const result = await response.json();
+    document.getElementById('locationResult').innerHTML = `
+      <h3>Location Data</h3>
+      <p>Version: ${result.version}</p>
+      <p>Message ID: ${result.messageID}</p>
+      <p>Latitude: ${result.latitude}</p>
+      <p>Longitude: ${result.longitude}</p>
+      <p>Subscriber State: ${result.subscriberState}</p>
+      <p>Timestamp: ${result.timestamp}</p>
+      <p>Status Code: ${result.statusCode}</p>
+      <p>Details: ${result.statusDetail}</p>
+    `;
+  } catch (error) {
+    document.getElementById('locationResult').innerHTML = '<p>Error fetching location data</p>';
+    console.error('Error:', error);
+  }
+}
+
     </script>
   `);
 });
