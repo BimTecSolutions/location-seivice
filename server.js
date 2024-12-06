@@ -17,7 +17,7 @@ app.get('/', async (req, res) => {
   };
 
   try {
-    const mobitelResponse = await axios.post('https://api.dialog.lk/ subscription/query-base', mobitelPayload, {
+    const mobitelResponse = await axios.post('https://api.dialog.lk/subscription/query-base', mobitelPayload, {
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       proxy: {
         host: parsedUrl.hostname,
