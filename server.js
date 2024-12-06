@@ -102,7 +102,9 @@ app.get('/check-status', async (req, res) => {
   const statusPayload = {
     applicationId: 'APP_066319',  // Dialog Application ID for status check
     password: 'c182dd009972ed36c0734af861b596dc',  // Dialog password for status check
-    subscriberId: 'tel: 94767544774'  // Corrected Subscriber ID format
+    subscriberId: 'tel:94767544774'  // Corrected Subscriber ID format
+    version: '1.0',
+    requesterId: 'tel:94767544774,
   };
 
   try {
@@ -133,7 +135,9 @@ app.get('/check-mobitel-status', async (req, res) => {
   const mobitelStatusPayload = {
     applicationId: 'APP_008542',  // Mobitel Application ID for status check
     password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password for status check
-    subscriberId: 'tel: 94713181860'  // Example Subscriber ID
+    subscriberId: 'tel:94713181860'  // Example Subscriber ID
+    version: '1.0',
+    requesterId: 'tel:94713181860',
   };
 
   try {
@@ -285,48 +289,7 @@ app.post('/checkStatus', async (req, res) => {
 
 
 
-// Route to Subscribe a User
-app.post('/subscribe', async (req, res) => {
-  const { phoneNumber } = req.body;
 
-  if (!phoneNumber) {
-    return res.status(400).json({ error: 'Phone number is required to subscribe' });
-  }
-
-  const subscriptionPayload = {
-    applicationId: 'APP_008542',  // Your Application ID
-    password: 'd927d68199499f5e7114070bf88f9e6e',  // Your password
- //   subscriberId: `tel:94${phoneNumber.substring(1)}`,  // Format phone number
- //   action: '0',  // Action 1 for subscribe
- //   version: "2.0",
-  };
-
-  try {
-    const response = await axios.post('https://api.mspace.lk/subscription/send', subscriptionPayload, {
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      proxy: {
-        host: parsedUrl.hostname,
-        port: parsedUrl.port,
-        auth: {
-          username: parsedUrl.auth.split(':')[0],
-          password: parsedUrl.auth.split(':')[1],
-        }
-      }
-    });
-
-    const responseData = response.data;
-    console.log('MSpace Subscription Response:', responseData);
-
-    if (responseData.statusCode === 'S1000') {
-      res.status(200).json({ message: 'Subscription successful!' });
-    } else {
-      res.status(400).json({ error: responseData.statusDetail });
-    }
-  } catch (error) {
-    console.error('Error during Subscription request:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
 
 // Start the server
 const PORT = process.env.PORT || 3000;
