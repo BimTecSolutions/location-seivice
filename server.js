@@ -235,10 +235,10 @@ app.get('/request-location', async (req, res) => {
 // Route for sending subscription action
 app.post('/send-subscription-action', async (req, res) => {
   const subscriptionActionPayload = {
-    applicationId: 'APP_008542',
-    password: 'd927d68199499f5e7114070bf88f9e6e',
-    subscriberId: 'tel:94713181860',
-    action: '1'
+    applicationId: 'APP_008542',  // Mobitel Application ID
+    password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password
+    subscriberId: 'tel:94713181860',  // Example Subscriber ID
+    action: '0'
   };
 
   try {
@@ -248,21 +248,20 @@ app.post('/send-subscription-action', async (req, res) => {
         host: parsedUrl.hostname,
         port: parsedUrl.port,
         auth: {
-          username: parsedUrl.username,
-          password: parsedUrl.password,
+          username: parsedUrl.username, // Fixie username
+          password: parsedUrl.password, // Fixie password
         }
       }
     });
 
     const subscriptionActionData = subscriptionActionResponse.data;
-    res.json(subscriptionActionData);
+    res.json(subscriptionActionData);  // Send the response data as JSON
 
   } catch (error) {
     console.error('Error sending subscription action:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 
 
@@ -278,9 +277,8 @@ app.get('/', (req, res) => {
     <h2>Dialog Subscription Status</h2>
     <button onclick="checkSubscriptionStatus()">Check Subscription Status</button>
     <div id="statusResult"></div>
-    <h2>Mobitel Subscription Status</h2>
-    <button onclick="checkMobitelSubscriptionStatus()">Check Mobitel Subscription Status</button>
-    <div id="mobitelStatusResult"></div>
+
+   
     <h2>OTP Request and Verification</h2>
     <button onclick="requestOTP()">Request OTP</button>
     <div id="otpRequestResult"></div>
@@ -292,69 +290,12 @@ app.get('/', (req, res) => {
     <h2>Mobitel Location Request</h2>
     <button onclick="requestLocation()">Request Location</button>
     <div id="locationResult"></div>
-    <h2>Mobitel Subscription Action</h2>
-    <button onclick="sendSubscriptionAction()">Send Subscription Action</button>
-    <div id="subscriptionActionResult"></div>
+    
+
+    
     <script>
-      async function sendSubscriptionAction() {
-        try {
-          const response = await fetch('/send-subscription-action', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              applicationId: "APP_008542",
-              password: "d927d68199499f5e7114070bf88f9e6e",
-              subscriberId: "tel:94713181860",
-              action: "1"
-            })
-          });
-          const result = await response.json();
-          document.getElementById('subscriptionActionResult').innerHTML = `
-            <h3>Subscription Action Result</h3>
-            <p>Version: ${result.version}</p>
-            <p>Status Code: ${result.statusCode}</p>
-            <p>Details: ${result.statusDetail}</p>
-            <p>Subscription Status: ${result.subscriptionStatus}</p>
-          `;
-        } catch (error) {
-          document.getElementById('subscriptionActionResult').innerHTML = '<p>Error sending subscription action</p>';
-          console.error('Error:', error);
-        }
-      }
-      async function checkSubscriptionStatus() {
-        try {
-          const response = await fetch('/check-status');
-          const result = await response.json();
-          document.getElementById('statusResult').innerHTML = \`
-            <h3>Subscription Status</h3>
-            <p>Version: \${result.version}</p>
-            <p>Status: \${result.subscriptionStatus}</p>
-            <p>Status Code: \${result.statusCode}</p>
-            <p>Details: \${result.statusDetail}</p>
-          \`;
-        } catch (error) {
-          document.getElementById('statusResult').innerHTML = '<p>Error fetching subscription status</p>';
-          console.error('Error:', error);
-        }
-      }
-      async function checkMobitelSubscriptionStatus() {
-        try {
-          const response = await fetch('/check-mobitel-status');
-          const result = await response.json();
-          document.getElementById('mobitelStatusResult').innerHTML = \`
-            <h3>Mobitel Subscription Status</h3>
-            <p>Version: \${result.version}</p>
-            <p>Status: \${result.subscriptionStatus}</p>
-            <p>Status Code: \${result.statusCode}</p>
-            <p>Details: \${result.statusDetail}</p>
-          \`;
-        } catch (error) {
-          document.getElementById('mobitelStatusResult').innerHTML = '<p>Error fetching Mobitel subscription status</p>';
-          console.error('Error:', error);
-        }
-      }
+
+ 
       async function requestOTP() {
         try {
           const response = await fetch('/request-otp');
@@ -397,6 +338,8 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
+
+      
       async function requestLocation() {
         try {
           const response = await fetch('/request-location');
@@ -417,10 +360,12 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
+
+
+      
     </script>
   `);
 });
-
 
  
 
