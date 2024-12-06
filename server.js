@@ -260,7 +260,10 @@ app.get('/', (req, res) => {
     <button onclick="requestLocation()">Request Location</button>
     <div id="locationResult"></div>
     
- 
+ <h2>Mobitel Subscription Action</h2>
+<button onclick="sendSubscriptionAction()">Send Subscription Action</button>
+<div id="subscriptionActionResult"></div>
+
     
     <script>
 
@@ -308,7 +311,8 @@ app.get('/', (req, res) => {
         }
       }
 
-      
+    ////////////////////////////
+    
       async function requestLocation() {
         try {
           const response = await fetch('/request-location');
@@ -329,7 +333,26 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
+//////////////////////////////
 
+      async function sendSubscriptionAction() {
+  try {
+    const response = await fetch('/send-subscription-action');
+    const result = await response.json();
+    document.getElementById('subscriptionActionResult').innerHTML = `
+      <h3>Subscription Action Result</h3>
+      <p>Version: ${result.version}</p>
+      <p>Status Code: ${result.statusCode}</p>
+      <p>Details: ${result.statusDetail}</p>
+      <p>Subscription Status: ${result.subscriptionStatus}</p>
+    `;
+  } catch (error) {
+    document.getElementById('subscriptionActionResult').innerHTML = '<p>Error sending subscription action</p>';
+    console.error('Error:', error);
+  }
+}
+
+//////////////
 
     </script>
   `);
