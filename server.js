@@ -12,12 +12,12 @@ const parsedUrl = new URL(fixieUrl); // Parsing the Fixie URL
 // Route for Base Size Query (Root URL "/")
 app.get('/', async (req, res) => {
   const mobitelPayload = {
-    applicationId: 'APP_008542',  // Mobitel Application ID
-    password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password
+    applicationId: 'APP_066319',  // Mobitel Application ID
+    password: 'c182dd009972ed36c0734af861b596dc',  // Mobitel password
   };
 
   try {
-    const mobitelResponse = await axios.post('https://api.mspace.lk/subscription/query-base', mobitelPayload, {
+    const mobitelResponse = await axios.post('https://api.dialog.lk/ subscription/query-base', mobitelPayload, {
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       proxy: {
         host: parsedUrl.hostname,
