@@ -103,9 +103,9 @@ app.get('/dialog', async (req, res) => {
 // Route for OTP Request (Root URL "/request-otp")
 app.get('/request-otp', async (req, res) => {
   const otpRequestPayload = {
-    applicationId: 'APP_008542',  // MSpace Application ID
-    password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
-    subscriberId: 'tel:94713181860',  // Example Subscriber ID
+    applicationId: 'APP_066319',  // MSpace Application ID
+    password: 'c182dd009972ed36c0734af861b596dc',  // MSpace password
+    subscriberId: 'tel:94767544774',  // Example Subscriber ID
     applicationHash: 'abcdefgh',
     applicationMetaData: {
       client: 'MOBILEAPP',
@@ -116,7 +116,7 @@ app.get('/request-otp', async (req, res) => {
   };
 
   try {
-    const otpRequestResponse = await axios.post('https://api.mspace.lk/otp/request', otpRequestPayload, {
+    const otpRequestResponse = await axios.post('https://api.dialog.lk/otp/request', otpRequestPayload, {
       headers: { 'Content-Type': 'application/json' },
       proxy: {
         host: parsedUrl.hostname,
@@ -141,14 +141,14 @@ app.get('/request-otp', async (req, res) => {
 app.post('/verify-otp', async (req, res) => {
   const { referenceNo, otp } = req.body;
   const otpVerifyPayload = {
-    applicationId: 'APP_008542',  // MSpace Application ID
-    password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
+    applicationId: 'APP_066319',  // MSpace Application ID
+    password: 'c182dd009972ed36c0734af861b596dc',  // MSpace password
     referenceNo,  // Reference number from OTP request
     otp  // OTP entered by user
   };
 
   try {
-    const otpVerifyResponse = await axios.post('https://api.mspace.lk/otp/verify', otpVerifyPayload, {
+    const otpVerifyResponse = await axios.post('https://api.dialog.lk/otp/verify', otpVerifyPayload, {
       headers: { 'Content-Type': 'application/json' },
       proxy: {
         host: parsedUrl.hostname,
