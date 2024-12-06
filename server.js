@@ -205,10 +205,10 @@ app.get('/request-location', async (req, res) => {
 // Route for sending subscription action
 app.post('/send-subscription-action', async (req, res) => {
   const subscriptionActionPayload = {
-    applicationId: 'APP_008542',  // Mobitel Application ID
-    password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password
-    subscriberId: 'tel:94713181860',  // Example Subscriber ID
-    action: '1'
+    applicationId: 'APP_008542',
+    password: 'd927d68199499f5e7114070bf88f9e6e',
+    subscriberId: 'tel:94713181860',
+    action: '0'
   };
 
   try {
@@ -218,17 +218,48 @@ app.post('/send-subscription-action', async (req, res) => {
         host: parsedUrl.hostname,
         port: parsedUrl.port,
         auth: {
-          username: parsedUrl.username, // Fixie username
-          password: parsedUrl.password, // Fixie password
+          username: parsedUrl.username,
+          password: parsedUrl.password,
         }
       }
     });
 
     const subscriptionActionData = subscriptionActionResponse.data;
-    res.json(subscriptionActionData);  // Send the response data as JSON
+    res.json(subscriptionActionData);
 
   } catch (error) {
     console.error('Error sending subscription action:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Route for getting subscriber list
+app.post('/get-subscriber-list', async (req, res) => {
+  const subscriberListPayload = {
+    applicationId: 'APP_008542',
+    password: 'd927d68199499f5e7114070bf88f9e6e',
+    version: '1.0',
+    requestPage: 2
+  };
+
+  try {
+    const subscriberListResponse = await axios.post('https://api.mspace.lk/subscription/getSubscriberList', subscriberListPayload, {
+      headers: { 'Content-Type': 'application/json' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.username,
+          password: parsedUrl.password,
+        }
+      }
+    });
+
+    const subscriberListData = subscriberListResponse.data;
+    res.json(subscriberListData);
+
+  } catch (error) {
+    console.error('Error fetching subscriber list:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
