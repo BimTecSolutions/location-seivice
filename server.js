@@ -7,6 +7,7 @@ app.use(express.json()); // To parse JSON body requests
 
 // Get Fixie URL from environment variables (for static IP)
 const fixieUrl = process.env.FIXIE_URL;
+const parsedUrl = new URL(fixieUrl); // Parsing the Fixie URL
 
 // Route for Base Size Query (Root URL "/")
 app.get('/', async (req, res) => {
@@ -22,8 +23,8 @@ app.get('/', async (req, res) => {
         host: parsedUrl.hostname,
         port: parsedUrl.port,
         auth: {
-          username: parsedUrl.auth.split(':')[0], // Fixie username
-          password: parsedUrl.auth.split(':')[1], // Fixie password
+          username: parsedUrl.username, // Fixie username
+          password: parsedUrl.password, // Fixie password
         }
       }
     });
@@ -52,7 +53,10 @@ app.get('/', async (req, res) => {
   }
 });
 
-
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 //Check Subscribtion Status
 app.post('/checkStatus', async (req, res) => {
