@@ -300,9 +300,8 @@ app.get('/', (req, res) => {
     </form>
     <div id="otpVerifyResult"></div>
     <h2>Mobitel Location Request</h2>
-<button onclick="requestLocation()">Request Location</button>
-<div id="locationResult"></div>
-
+    <button onclick="requestLocation()">Request Location</button>
+    <div id="locationResult"></div>
     <script>
       async function checkSubscriptionStatus() {
         try {
@@ -382,28 +381,26 @@ app.get('/', (req, res) => {
         }
       }
 
-
       async function requestLocation() {
-  try {
-    const response = await fetch('/request-location');
-    const result = await response.json();
-    document.getElementById('locationResult').innerHTML = `
-      <h3>Location Data</h3>
-      <p>Version: ${result.version}</p>
-      <p>Message ID: ${result.messageID}</p>
-      <p>Latitude: ${result.latitude}</p>
-      <p>Longitude: ${result.longitude}</p>
-      <p>Subscriber State: ${result.subscriberState}</p>
-      <p>Timestamp: ${result.timestamp}</p>
-      <p>Status Code: ${result.statusCode}</p>
-      <p>Details: ${result.statusDetail}</p>
-    `;
-  } catch (error) {
-    document.getElementById('locationResult').innerHTML = '<p>Error fetching location data</p>';
-    console.error('Error:', error);
-  }
-}
-
+        try {
+          const response = await fetch('/request-location');
+          const result = await response.json();
+          document.getElementById('locationResult').innerHTML = \`
+            <h3>Location Data</h3>
+            <p>Version: \${result.version}</p>
+            <p>Message ID: \${result.messageID}</p>
+            <p>Latitude: \${result.latitude}</p>
+            <p>Longitude: \${result.longitude}</p>
+            <p>Subscriber State: \${result.subscriberState}</p>
+            <p>Timestamp: \${result.timestamp}</p>
+            <p>Status Code: \${result.statusCode}</p>
+            <p>Details: \${result.statusDetail}</p>
+          \`;
+        } catch (error) {
+          document.getElementById('locationResult').innerHTML = '<p>Error fetching location data</p>';
+          console.error('Error:', error);
+        }
+      }
     </script>
   `);
 });
