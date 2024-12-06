@@ -116,6 +116,7 @@ app.get('/', (req, res) => {
 
 
 
+
 //Check Subscribtion Status
 app.post('/checkStatus', async (req, res) => {
   const { phoneNumber } = req.body;
