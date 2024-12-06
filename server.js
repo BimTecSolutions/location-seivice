@@ -33,11 +33,6 @@ app.get('/', async (req, res) => {
     password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password
   };
 
-  const dialogPayload = {
-    applicationId: 'APP_066319',  // Dialog Application ID
-    password: 'c182dd009972ed36c0734af861b596dc',  // Dialog password
-  };
-
   try {
     const mobitelResponse = await axios.post('https://api.mspace.lk/subscription/query-base', mobitelPayload, {
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -51,54 +46,29 @@ app.get('/', async (req, res) => {
       }
     });
 
-    const dialogResponse = await axios.post('https://api.dialog.lk/subscription/query-base', dialogPayload, {
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      proxy: {
-        host: parsedUrl.hostname,
-        port: parsedUrl.port,
-        auth: {
-          username: parsedUrl.auth.split(':')[0], // Fixie username
-          password: parsedUrl.auth.split(':')[1], // Fixie password
-        }
-      }
-    });
-
     const mobitelData = mobitelResponse.data;
-    const dialogData = dialogResponse.data;
 
     console.log('MSpace Base Size Response:', mobitelData);
-    console.log('Dialog Base Size Response:', dialogData);
 
-    if (mobitelData.statusCode === 'S1000' && dialogData.statusCode === 'S1000') {
-      const { baseSize: mobitelBaseSize } = mobitelData;
-      const { baseSize: dialogBaseSize } = dialogData;
+    if (mobitelData.statusCode === 'S1000') {
+      const { baseSize } = mobitelData;
 
       res.send(`
-        <h1>Base Sizes</h1>
-        <h2>Mobitel Base Size: ${mobitelBaseSize}</h2>
-        <h2>Dialog Base Size: ${dialogBaseSize}</h2>
+        <h1>Mobitel Base Size</h1>
+        <h2>Base Size: ${baseSize}</h2>
       `);
     } else {
       const mobitelError = mobitelData.statusDetail || 'Unknown error';
-      const dialogError = dialogData.statusDetail || 'Unknown error';
       
       console.log('Error from MSpace:', mobitelError);
-      console.log('Error from Dialog:', dialogError);
 
-      res.status(400).send(`
-        <h1>Errors</h1>
-        <p>Mobitel Error: ${mobitelError}</p>
-        <p>Dialog Error: ${dialogError}</p>
-      `);
+      res.status(400).send(`Error: ${mobitelError}`);
     }
   } catch (error) {
-    console.error('Error fetching base sizes:', error);
+    console.error('Error fetching base size:', error);
     res.status(500).send('Internal Server Error');
   }
 });
-
-
-
 
 
 
