@@ -128,6 +128,37 @@ app.get('/check-status', async (req, res) => {
 });
 
 
+// Route for Mobitel Subscription Status Query (Root URL "/check-mobitel-status")
+app.get('/check-mobitel-status', async (req, res) => {
+  const mobitelStatusPayload = {
+    applicationId: 'APP_008542',  // Mobitel Application ID for status check
+    password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password for status check
+    subscriberId: 'tel:+94713181860'  // Example Subscriber ID
+  };
+
+  try {
+    const mobitelStatusResponse = await axios.post('https://api.mspace.lk/subscription/getStatus', mobitelStatusPayload, {
+      headers: { 'Content-Type': 'application/json' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.username, // Fixie username
+          password: parsedUrl.password, // Fixie password
+        }
+      }
+    });
+
+    const mobitelStatusData = mobitelStatusResponse.data;
+    res.json(mobitelStatusData);  // Send the status data as JSON
+
+  } catch (error) {
+    console.error('Error fetching Mobitel subscription status:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 
 // Root URL route
 app.get('/', (req, res) => {
@@ -141,6 +172,9 @@ app.get('/', (req, res) => {
     <h2>Dialog Subscription Status</h2>
     <button onclick="checkSubscriptionStatus()">Check Subscription Status</button>
     <div id="statusResult"></div>
+    <h2>Mobitel Subscription Status</h2>
+    <button onclick="checkMobitelSubscriptionStatus()">Check Mobitel Subscription Status</button>
+    <div id="mobitelStatusResult"></div>
     <script>
       async function checkSubscriptionStatus() {
         try {
@@ -158,9 +192,27 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
+
+      async function checkMobitelSubscriptionStatus() {
+        try {
+          const response = await fetch('/check-mobitel-status');
+          const result = await response.json();
+          document.getElementById('mobitelStatusResult').innerHTML = \`
+            <h3>Mobitel Subscription Status</h3>
+            <p>Version: \${result.version}</p>
+            <p>Status: \${result.subscriptionStatus}</p>
+            <p>Status Code: \${result.statusCode}</p>
+            <p>Details: \${result.statusDetail}</p>
+          \`;
+        } catch (error) {
+          document.getElementById('mobitelStatusResult').innerHTML = '<p>Error fetching Mobitel subscription status</p>';
+          console.error('Error:', error);
+        }
+      }
     </script>
   `);
 });
+
 
 
 
