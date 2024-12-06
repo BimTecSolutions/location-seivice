@@ -333,6 +333,41 @@ app.get('/', (req, res) => {
 
 
 
+// Data to be sent in the POST request
+const requestData = {
+  applicationId: "APP_008542",
+  password: "d927d68199499f5e7114070bf88f9e6e",
+  subscriberId: "tel:94713181860",
+  action: "1"
+};
+
+// URL of the API endpoint
+const url = "https://api.mspace.lk/subscription/send";
+
+// Function to send the POST request
+async function sendPostRequest() {
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Inform the server the data format being sent
+      },
+      body: JSON.stringify(requestData), // Convert the data to JSON string
+    });
+
+    if (response.ok) {
+      const responseData = await response.json(); // Parse the JSON response
+      console.log("Success:", responseData);
+    } else {
+      console.error("Request failed with status:", response.status);
+    }
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+}
+
+// Call the function
+sendPostRequest();
 
       
     </script>
