@@ -244,8 +244,6 @@ app.get('/', (req, res) => {
       <li><a href="/mobitel">Mobitel Base Size</a></li>
       <li><a href="/dialog">Dialog Base Size</a></li>
     </ul>
-
-   
     <h2>OTP Request and Verification</h2>
     <button onclick="requestOTP()">Request OTP</button>
     <div id="otpRequestResult"></div>
@@ -254,22 +252,17 @@ app.get('/', (req, res) => {
       <button type="submit">Verify OTP</button>
     </form>
     <div id="otpVerifyResult"></div>
-
-    
     <h2>Mobitel Location Request</h2>
     <button onclick="requestLocation()">Request Location</button>
     <div id="locationResult"></div>
-
-
-<h2>Mobitel Subscription Action</h2>
-<button onclick="sendSubscriptionAction()">Send Subscription Action</button>
-<div id="subscriptionActionResult"></div>
-
-
-    
+    <h2>Mobitel Subscription Action</h2>
+    <button onclick="sendSubscriptionAction()">Send Subscription Action</button>
+    <div id="subscriptionActionResult"></div>
+    <h2>Get Subscriber List</h2>
+    <button onclick="getSubscriberList()">Get Subscriber List</button>
+    <div id="subscriberListResult"></div>
     <script>
-
-     async function requestOTP() {
+      async function requestOTP() {
         try {
           const response = await fetch('/request-otp');
           const result = await response.json();
@@ -285,7 +278,6 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
-      
       async function verifyOTP(event) {
         event.preventDefault();
         const otp = document.getElementById('otp').value;
@@ -312,49 +304,81 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
-
-    ////////////////////////////
-async function sendSubscriptionAction() {
-  try {
-    const response = await fetch('/send-subscription-action');
-    const result = await response.json();
-    document.getElementById('subscriptionActionResult').innerHTML = `
-      <h3>Subscription Action Result</h3>
-      <p>Version: ${result.version}</p>
-      <p>Status Code: ${result.statusCode}</p>
-      <p>Details: ${result.statusDetail}</p>
-      <p>Subscription Status: ${result.subscriptionStatus}</p>
-    `;
-  } catch (error) {
-    document.getElementById('subscriptionActionResult').innerHTML = '<p>Error sending subscription action</p>';
-    console.error('Error:', error);
-  }
-}
-
-//////////////////////////////
-
+      async function requestLocation() {
+        try {
+          const response = await fetch('/request-location');
+          const result = await response.json();
+          document.getElementById('locationResult').innerHTML = \`
+            <h3>Location Data</h3>
+            <p>Version: \${result.version}</p>
+            <p>Message ID: \${result.messageID}</p>
+            <p>Latitude: \${result.latitude}</p>
+            <p>Longitude: \${result.longitude}</p>
+            <p>Subscriber State: \${result.subscriberState}</p>
+            <p>Timestamp: \${result.timestamp}</p>
+            <p>Status Code: \${result.statusCode}</p>
+            <p>Details: \${result.statusDetail}</p>
+          \`;
+        } catch (error) {
+          document.getElementById('locationResult').innerHTML = '<p>Error fetching location data</p>';
+          console.error('Error:', error);
+        }
+      }
       async function sendSubscriptionAction() {
-  try {
-    const response = await fetch('/send-subscription-action');
-    const result = await response.json();
-    document.getElementById('subscriptionActionResult').innerHTML = `
-      <h3>Subscription Action Result</h3>
-      <p>Version: ${result.version}</p>
-      <p>Status Code: ${result.statusCode}</p>
-      <p>Details: ${result.statusDetail}</p>
-      <p>Subscription Status: ${result.subscriptionStatus}</p>
-    `;
-  } catch (error) {
-    document.getElementById('subscriptionActionResult').innerHTML = '<p>Error sending subscription action</p>';
-    console.error('Error:', error);
-  }
-}
-
-//////////////
-
+        try {
+          const response = await fetch('/send-subscription-action', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              applicationId: "APP_008542",
+              password: "d927d68199499f5e7114070bf88f9e6e",
+              subscriberId: "tel:94713181860",
+              action: "1"
+            })
+          });
+          const result = await response.json();
+          document.getElementById('subscriptionActionResult').innerHTML = \`
+            <h3>Subscription Action Result</h3>
+            <p>Version: \${result.version}</p>
+            <p>Status Code: \${result.statusCode}</p>
+            <p>Details: \${result.statusDetail}</p>
+            <p>Subscription Status: \${result.subscriptionStatus}</p>
+          \`;
+        } catch (error) {
+          document.getElementById('subscriptionActionResult').innerHTML = '<p>Error sending subscription action</p>';
+          console.error('Error:', error);
+        }
+      }
+      async function getSubscriberList() {
+        try {
+          const response = await fetch('/get-subscriber-list', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              applicationId: "APP_008542",
+              password: "d927d68199499f5e7114070bf88f9e6e",
+              version: "1.0",
+              requestPage: 2
+            })
+          });
+          const result = await response.json();
+          document.getElementById('subscriberListResult').innerHTML = \`
+            <h3>Subscriber List</h3>
+            <pre>\${JSON.stringify(result, null, 2)}</pre>
+          \`;
+        } catch (error) {
+          document.getElementById('subscriberListResult').innerHTML = '<p>Error fetching subscriber list</p>';
+          console.error('Error:', error);
+        }
+      }
     </script>
   `);
 });
+
 
  
 
