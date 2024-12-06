@@ -102,7 +102,7 @@ app.get('/check-status', async (req, res) => {
   const statusPayload = {
     applicationId: 'APP_066319',  // Dialog Application ID for status check
     password: 'c182dd009972ed36c0734af861b596dc',  // Dialog password for status check
-    subscriberId: 'tel:94767544774'  // Corrected Subscriber ID format
+    subscriberId: 'tel:94767544774',  // Corrected Subscriber ID format
     version: '1.0',
     requesterId: 'tel:94767544774,
   };
@@ -135,7 +135,7 @@ app.get('/check-mobitel-status', async (req, res) => {
   const mobitelStatusPayload = {
     applicationId: 'APP_008542',  // Mobitel Application ID for status check
     password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password for status check
-    subscriberId: 'tel:94713181860'  // Example Subscriber ID
+    subscriberId: 'tel:94713181860',  // Example Subscriber ID
     version: '1.0',
     requesterId: 'tel:94713181860',
   };
@@ -216,77 +216,6 @@ app.get('/', (req, res) => {
     </script>
   `);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Check Subscribtion Status
-app.post('/checkStatus', async (req, res) => {
-  const { phoneNumber } = req.body;
-  if (!phoneNumber || !phoneNumber.match(/^07\d{8}$/)) {
-    return res.status(400).json({ error: 'Invalid phone number format' });
-  }
-
-  const subscriberId = `tel:94${phoneNumber.substring(1)}`;
-  const statusPayload = 
-  
-{
-  "applicationId": "APP_008542",
-  "password": "d927d68199499f5e7114070bf88f9e6e",
-  "version": "2.0",
-  "requesterId": `subscriberId`,
-  "subscriberId": `subscriberId`,
-
-}
-
-  console.log('Status Payload:', statusPayload);
-
-  try {
-    const response = await axios.post('https://api.mspace.lk/subscription/getStatus', statusPayload, {
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      proxy: {
-        host: parsedUrl.hostname,
-        port: parsedUrl.port,
-        auth: {
-          username: parsedUrl.auth.split(':')[0],
-          password: parsedUrl.auth.split(':')[1],
-        },
-      },
-    });
-
-    console.log('Full API Response:', response.data);
-
-    if (response.data.statusCode === 'S1000') {
-      const { subscriptionStatus } = response.data;
-      if (subscriptionStatus === 'UNREGISTERED') {
-        res.status(200).json({ message: 'User is unregistered', status: subscriptionStatus });
-      } else {
-        res.status(200).json({ message: 'Subscription status retrieved', status: subscriptionStatus });
-      }
-    } else {
-      res.status(400).json({ error: response.data.statusDetail });
-    }
-  } catch (error) {
-    console.error('Error during Subscription status check request:', error.response ? error.response.data : error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
 
 
 
