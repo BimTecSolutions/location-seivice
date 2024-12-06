@@ -326,9 +326,7 @@ app.get('/', (req, res) => {
     <button onclick="requestLocation()">Request Location</button>
     <div id="locationResult"></div>
     
-<h2>Get Subscriber List</h2>
-<button onclick="getSubscriberList()">Get Subscriber List</button>
-<div id="subscriberListResult"></div>
+
 
     
     <script>
@@ -399,30 +397,6 @@ app.get('/', (req, res) => {
         }
       }
 
-      async function getSubscriberList() {
-  try {
-    const response = await fetch('/get-subscriber-list', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        applicationId: "APP_008542",
-        password: "d927d68199499f5e7114070bf88f9e6e",
-        version: "1.0",
-        requestPage: 2
-      })
-    });
-    const result = await response.json();
-    document.getElementById('subscriberListResult').innerHTML = `
-      <h3>Subscriber List</h3>
-      <pre>${JSON.stringify(result, null, 2)}</pre>
-    `;
-  } catch (error) {
-    document.getElementById('subscriberListResult').innerHTML = '<p>Error fetching subscriber list</p>';
-    console.error('Error:', error);
-  }
-}
 
 
 
