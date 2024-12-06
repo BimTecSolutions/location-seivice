@@ -275,6 +275,38 @@ app.get('/request-location', async (req, res) => {
   }
 });
 
+// Route for sending subscription action
+app.post('/send-subscription-action', async (req, res) => {
+  const subscriptionActionPayload = {
+    applicationId: 'APP_008542',  // Mobitel Application ID
+    password: 'd927d68199499f5e7114070bf88f9e6e',  // Mobitel password
+    subscriberId: 'tel:94713181860',  // Example Subscriber ID
+    action: '0'
+  };
+
+  try {
+    const subscriptionActionResponse = await axios.post('https://api.mspace.lk/subscription/send', subscriptionActionPayload, {
+      headers: { 'Content-Type': 'application/json' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.username, // Fixie username
+          password: parsedUrl.password, // Fixie password
+        }
+      }
+    });
+
+    const subscriptionActionData = subscriptionActionResponse.data;
+    res.json(subscriptionActionData);  // Send the response data as JSON
+
+  } catch (error) {
+    console.error('Error sending subscription action:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 
 // Root URL route
 app.get('/', (req, res) => {
@@ -302,7 +334,46 @@ app.get('/', (req, res) => {
     <h2>Mobitel Location Request</h2>
     <button onclick="requestLocation()">Request Location</button>
     <div id="locationResult"></div>
+
+
+<h2>Mobitel Subscription Action</h2>
+<button onclick="sendSubscriptionAction()">Send Subscription Action</button>
+<div id="subscriptionActionResult"></div>
+
+
     <script>
+
+
+async function sendSubscriptionAction() {
+  try {
+    const response = await fetch('/send-subscription-action', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        applicationId: " APP_008542",
+        password: "d927d68199499f5e7114070bf88f9e6e",
+        subscriberId: "tel:94713181860",
+        action: "0"
+      })
+    });
+    const result = await response.json();
+    document.getElementById('subscriptionActionResult').innerHTML = `
+      <h3>Subscription Action Result</h3>
+      <p>Version: ${result.version}</p>
+      <p>Status Code: ${result.statusCode}</p>
+      <p>Details: ${result.statusDetail}</p>
+      <p>Subscription Status: ${result.subscriptionStatus}</p>
+    `;
+  } catch (error) {
+    document.getElementById('subscriptionActionResult').innerHTML = '<p>Error sending subscription action</p>';
+    console.error('Error:', error);
+  }
+}
+
+
+    
       async function checkSubscriptionStatus() {
         try {
           const response = await fetch('/check-status');
