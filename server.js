@@ -137,7 +137,7 @@ app.get('/check-mobitel-status', async (req, res) => {
 
   "applicationId": "APP_008542",
   "password": "d927d68199499f5e7114070bf88f9e6e",
-  "subscriberId": "tel:94713181860",
+  "subscriberId": "tel:94703181860",
   "applicationHash": "abcdefgh",
   "applicationMetaData": {
     "client": "MOBILEAPP",
