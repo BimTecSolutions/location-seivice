@@ -176,7 +176,11 @@ app.get('/request-location', async (req, res) => {
     password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
     version: '2.0',  
     subscriberId: 'tel:94713181860',  // Example Subscriber ID
-    serviceType: 'IMMEDIATE'
+    serviceType: 'IMMEDIATE',
+  
+ "responseTime": "NO_DELAY", 
+"freshness":  "HIGH",
+ "horizontalAccuracy": "1500",
   };
 
   try {
