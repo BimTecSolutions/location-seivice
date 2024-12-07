@@ -177,10 +177,7 @@ app.get('/request-location', async (req, res) => {
     version: '2.0',  
     subscriberId: 'tel:94713181860',  // Example Subscriber ID
     serviceType: 'IMMEDIATE',
-  
- "responseTime": "NO_DELAY", 
-"freshness":  "HIGH",
- "horizontalAccuracy": "1500",
+    requesterId: "tel:94713181860",
   };
 
   try {
@@ -208,15 +205,15 @@ app.get('/request-location', async (req, res) => {
 // Route for sending subscription action
 app.post('/send-subscription-action', async (req, res) => {
   const subscriptionActionPayload = {
-    "applicationId": "APP_008542",
-    "password": "d927d68199499f5e7114070bf88f9e6e",
-    "subscriberId": "tel:94713181860",
+    "applicationId": "APP_066319",
+    "password": "c182dd009972ed36c0734af861b596dc",
+    "subscriberId": "tel:94767544774",
 
     "action": "1"
   };
 
   try {
-    const subscriptionActionResponse = await axios.post('https://api.mspace.lk/subscription/send', subscriptionActionPayload, {
+    const subscriptionActionResponse = await axios.post('https://api.dialog.lk/subscription/send', subscriptionActionPayload, {
       headers: { 'Content-Type': 'application/json' },
       proxy: {
         host: parsedUrl.hostname,
@@ -367,9 +364,9 @@ app.get('/', (req, res) => {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              applicationId: "APP_008542",
-              password: "d927d68199499f5e7114070bf88f9e6e",
-              subscriberId: "tel:94713181860",      
+              applicationId: "APP_066319",
+              password: "c182dd009972ed36c0734af861b596dc",
+              subscriberId: "tel:94767544774",      
               action: "1"
             })
           });
