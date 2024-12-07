@@ -364,10 +364,11 @@ app.get('/', (req, res) => {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              applicationId: "APP_008542",
-              password: "d927d68199499f5e7114070bf88f9e6e",
-              subscriberId: "tel:94713181860",
-              requesterId: 'tel:94713181860', 
+              applicationId: "APP_066319",
+              password: "c182dd009972ed36c0734af861b596dc",
+              subscriberId: "tel:94767544774",
+              version:"1.0",
+         
               action: "1"
             })
           });
