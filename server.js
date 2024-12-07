@@ -205,15 +205,15 @@ app.get('/request-location', async (req, res) => {
 // Route for sending subscription action
 app.post('/send-subscription-action', async (req, res) => {
   const subscriptionActionPayload = {
-    "applicationId": "APP_008542",
-    "password": "d927d68199499f5e7114070bf88f9e6e",
-    "subscriberId": "tel:94713181860",
+    "applicationId": "APP_066319",
+    "password": "c182dd009972ed36c0734af861b596dc",
+    "subscriberId": "tel:94767544774",
     "version":"1.0",
     "action": "1"
   };
 
   try {
-    const subscriptionActionResponse = await axios.post('https://api.mspace.lk/subscription/send', subscriptionActionPayload, {
+    const subscriptionActionResponse = await axios.post('https://api.dialog.lk/subscription/send', subscriptionActionPayload, {
       headers: { 'Content-Type': 'application/json' },
       proxy: {
         host: parsedUrl.hostname,
