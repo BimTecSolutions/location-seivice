@@ -174,8 +174,7 @@ app.get('/request-location', async (req, res) => {
   const locationRequestPayload = {
     applicationId: 'APP_008542',  // MSpace Application ID
     password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
-    version: '1.0',
-    requesterId: 'tel:94713181860',  // Example Requester ID
+    version: '2.0',  
     subscriberId: 'tel:94713181860',  // Example Subscriber ID
     serviceType: 'IMMEDIATE'
   };
