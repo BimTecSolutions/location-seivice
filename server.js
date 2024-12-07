@@ -207,9 +207,9 @@ app.post('/send-subscription-action', async (req, res) => {
   const subscriptionActionPayload = {
     "applicationId": "APP_066319",
     "password": "c182dd009972ed36c0734af861b596dc",
-    "subscriberId": "tel:94767544774",
+    "subscriberId": "te:94767544774",
 
-    "action": "1"
+    "action": "0"
   };
 
   try {
@@ -366,8 +366,8 @@ app.get('/', (req, res) => {
             body: JSON.stringify({
               applicationId: "APP_066319",
               password: "c182dd009972ed36c0734af861b596dc",
-              subscriberId: "tel:94767544774",      
-              action: "1"
+              subscriberId: "te:94767544774",      
+              action: "0"
             })
           });
           const result = await response.json();
