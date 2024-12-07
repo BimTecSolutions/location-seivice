@@ -237,14 +237,14 @@ app.post('/send-subscription-action', async (req, res) => {
 // Route for getting subscriber list
 app.post('/get-subscriber-list', async (req, res) => {
   const subscriberListPayload = {
-    applicationId: 'APP_008542',
-    password: 'd927d68199499f5e7114070bf88f9e6e',
+    applicationId: 'APP_066319',
+    password: 'c182dd009972ed36c0734af861b596dc',
     version: '1.0',
     requestPage: 2
   };
 
   try {
-    const subscriberListResponse = await axios.post('https://api.mspace.lk/subscription/getSubscriberList', subscriberListPayload, {
+    const subscriberListResponse = await axios.post('https://api.dialog.lk/subscription/getSubscriberList', subscriberListPayload, {
       headers: { 'Content-Type': 'application/json' },
       proxy: {
         host: parsedUrl.hostname,
