@@ -208,12 +208,12 @@ app.post('/send-subscription-action', async (req, res) => {
     "applicationId": "APP_008542",
     "password": "d927d68199499f5e7114070bf88f9e6e",
     "subscriberId": "tel:94713181860",
-    "version":"1.0",
+
     "action": "1"
   };
 
   try {
-    const subscriptionActionResponse = await axios.post('https://api.dialog.lk/subscription/send', subscriptionActionPayload, {
+    const subscriptionActionResponse = await axios.post('https://api.mspace.lk/subscription/send', subscriptionActionPayload, {
       headers: { 'Content-Type': 'application/json' },
       proxy: {
         host: parsedUrl.hostname,
@@ -366,9 +366,7 @@ app.get('/', (req, res) => {
             body: JSON.stringify({
               applicationId: "APP_008542",
               password: "d927d68199499f5e7114070bf88f9e6e",
-              subscriberId: "tel:94713181860",
-              version:"1.0",
-         
+              subscriberId: "tel:94713181860",      
               action: "1"
             })
           });
