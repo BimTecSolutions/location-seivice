@@ -237,8 +237,8 @@ app.post('/send-subscription-action', async (req, res) => {
 // Route for getting subscriber list
 app.post('/get-subscriber-list', async (req, res) => {
   const subscriberListPayload = {
-    applicationId: 'APP_066319',
-    password: 'c182dd009972ed36c0734af861b596dc',
+    applicationId: 'APP_008542',
+    password: 'd927d68199499f5e7114070bf88f9e6e',
     version: '1.0',
     requestPage: 2
   };
