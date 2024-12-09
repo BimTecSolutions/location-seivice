@@ -310,45 +310,45 @@ app.get('/', (req, res) => {
         }
       }
       
-async function verifyOTP(event) {
-    // Prevent default form submission behavior
-    event.preventDefault();
-
-    // Get the OTP value from the input field
-    const otp = document.getElementById('otp').value;
-
-    // Extract the reference number from the DOM
-    const referenceNo = document
-        .querySelector('#otpRequestResult p:nth-child(2)')
-        .innerText.split(': ')[1];
-
-    try {
-        // Send a POST request to verify the OTP
-        const response = await fetch('/verify-otp', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ referenceNo, otp }),
-        });
-
-        // Parse the response as JSON
-        const result = await response.json();
-
-        // Display the verification result in the DOM
-        document.getElementById('otpVerifyResult').innerHTML = `
-            <h3>OTP Verification</h3>
-            <p>Status Code: ${result.statusCode}</p>
-            <p>Details: ${result.statusDetail}</p>
-        `;
-    } catch (error) {
-        // Handle errors and display a message in the DOM
-        document.getElementById('otpVerifyResult').innerHTML = `
-            <p>Error verifying OTP</p>
-        `;
-        console.error('Error:', error);
-    }
-}
+      async function verifyOTP(event) {
+          // Prevent default form submission behavior
+          event.preventDefault();
+      
+          // Get the OTP value from the input field
+          const otp = document.getElementById('otp').value;
+      
+          // Extract the reference number from the DOM
+          const referenceNo = document
+              .querySelector('#otpRequestResult p:nth-child(2)')
+              .innerText.split(': ')[1];
+      
+          try {
+              // Send a POST request to verify the OTP
+              const response = await fetch('/verify-otp', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ referenceNo, otp }),
+              });
+      
+              // Parse the response as JSON
+              const result = await response.json();
+      
+              // Display the verification result in the DOM
+              document.getElementById('otpVerifyResult').innerHTML = `
+                  <h3>OTP Verification</h3>
+                  <p>Status Code: ${result.statusCode}</p>
+                  <p>Details: ${result.statusDetail}</p>
+              `;
+          } catch (error) {
+              // Handle errors and display a message in the DOM
+              document.getElementById('otpVerifyResult').innerHTML = `
+                  <p>Error verifying OTP</p>
+              `;
+              console.error('Error:', error);
+          }
+      }
 
 
       async function requestLocation() {
