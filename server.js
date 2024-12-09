@@ -309,32 +309,36 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
-      async function verifyOTP(event) {
-        event.preventDefault();
-        const otp = document.getElementById('otp').value;
-        const referenceNo = document.querySelector('#otpRequestResult p:nth-child(2)').innerText.split(': ')[1];
-        try {
-          const response = await fetch('/verify-otp', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              referenceNo,
-              otp
-            })
-          });
-          const result = await response.json();
-          document.getElementById('otpVerifyResult').innerHTML = \`
-            <h3>OTP Verification</h3>
-            <p>Status Code: \${result.statusCode}</p>
-            <p>Details: \${result.statusDetail}</p>
-          \`;
-        } catch (error) {
-          document.getElementById('otpVerifyResult').innerHTML = '<p>Error verifying OTP</p>';
-          console.error('Error:', error);
-        }
-      }
+      
+async function verifyOTP(event) {
+  event.preventDefault();
+  const otp = document.getElementById('otp').value;
+  const referenceNo = document.querySelector('#otpRequestResult p:nth-child(2)').innerText.split(': ')[1];
+  try {
+    const response = await fetch('/verify-otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        referenceNo,
+        otp
+      })
+    });
+    const result = await response.json();
+    document.getElementById('otpVerifyResult').innerHTML = `
+      <h3>OTP Verification</h3>
+      <p>Status Code: ${result.statusCode}</p>
+      <p>Details: ${result.statusDetail}</p>
+      <p>Subscription Status: ${result.subscriptionStatus}</p>
+      <p>Subscriber ID: ${result.subscriberId}</p>
+    `;
+  } catch (error) {
+    document.getElementById('otpVerifyResult').innerHTML = '<p>Error verifying OTP</p>';
+    console.error('Error:', error);
+  }
+}
+
       async function requestLocation() {
         try {
           const response = await fetch('/request-location');
