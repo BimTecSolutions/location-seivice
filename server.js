@@ -175,9 +175,9 @@ app.get('/request-location', async (req, res) => {
     applicationId: 'APP_008542',  // MSpace Application ID
     password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
     version: '2.0',  
-    subscriberId: 'tel:94713181860',  // Example Subscriber ID
+    subscriberId: 'tel:YzYzNWNiMGMzY2JiZmExNTQzYWJmODI5M2U5MDQzMDcyMWZmY2I2NzczZmYwZWU5OTYzNGFkNmQ3OWYwOWZlYzptb2JpdGVs',  // Example Subscriber ID
     serviceType: 'IMMEDIATE',
-    requesterId: "tel:94713181860",
+
   };
 
   try {
@@ -207,7 +207,7 @@ app.post('/send-subscription-action', async (req, res) => {
   const subscriptionActionPayload = {
     "applicationId": "APP_008542",
     "password": "d927d68199499f5e7114070bf88f9e6e",
-    "subscriberId": "tel:ODMxODE3N2NiYTdhNzY2YTc1YTQ3MjE4NThkZTBiNGY2MWE2OGRmZTQzMmNjYjk2NmNiYjVmMDIyOTVmZTIyYzptb2JpdGVs",
+    "subscriberId": "tel:YzYzNWNiMGMzY2JiZmExNTQzYWJmODI5M2U5MDQzMDcyMWZmY2I2NzczZmYwZWU5OTYzNGFkNmQ3OWYwOWZlYzptb2JpdGVs",
     "action": "1"
   };
 
@@ -363,7 +363,7 @@ app.get('/', (req, res) => {
             body: JSON.stringify({
               applicationId: "APP_008542",
               password: "d927d68199499f5e7114070bf88f9e6e",
-              subscriberId: "tel:ODMxODE3N2NiYTdhNzY2YTc1YTQ3MjE4NThkZTBiNGY2MWE2OGRmZTQzMmNjYjk2NmNiYjVmMDIyOTVmZTIyYzptb2JpdGVs",  // Corrected format
+              subscriberId: "tel:YzYzNWNiMGMzY2JiZmExNTQzYWJmODI5M2U5MDQzMDcyMWZmY2I2NzczZmYwZWU5OTYzNGFkNmQ3OWYwOWZlYzptb2JpdGVs",  // Corrected format
               action: "1"
             })
           });
