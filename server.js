@@ -207,7 +207,7 @@ app.post('/send-subscription-action', async (req, res) => {
   const subscriptionActionPayload = {
     "applicationId": "APP_008542",
     "password": "d927d68199499f5e7114070bf88f9e6e",
-    "subscriberId": "tel:ZDdmODExODVjNjVkMTE0ZDliNWYwMDgwZGVkNTVkNDcxMjczODgyODIyMmNhZDEwODdjYmU1ZTYwYzRjNThkZTptb2JpdGVs",
+    "subscriberId": "tel:ODMxODE3N2NiYTdhNzY2YTc1YTQ3MjE4NThkZTBiNGY2MWE2OGRmZTQzMmNjYjk2NmNiYjVmMDIyOTVmZTIyYzptb2JpdGVs",
     "action": "1"
   };
 
@@ -363,7 +363,7 @@ app.get('/', (req, res) => {
             body: JSON.stringify({
               applicationId: "APP_008542",
               password: "d927d68199499f5e7114070bf88f9e6e",
-              subscriberId: "tel:ZDdmODExODVjNjVkMTE0ZDliNWYwMDgwZGVkNTVkNDcxMjczODgyODIyMmNhZDEwODdjYmU1ZTYwYzRjNThkZTptb2JpdGVs",  // Corrected format
+              subscriberId: "tel:ODMxODE3N2NiYTdhNzY2YTc1YTQ3MjE4NThkZTBiNGY2MWE2OGRmZTQzMmNjYjk2NmNiYjVmMDIyOTVmZTIyYzptb2JpdGVs",  // Corrected format
               action: "1"
             })
           });
