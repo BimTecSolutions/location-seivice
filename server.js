@@ -265,7 +265,6 @@ app.post('/get-subscriber-list', async (req, res) => {
 });
 
 
-
 // Root URL route
 app.get('/', (req, res) => {
   res.send(`
@@ -309,48 +308,31 @@ app.get('/', (req, res) => {
           console.error('Error:', error);
         }
       }
-      
       async function verifyOTP(event) {
-          // Prevent default form submission behavior
-          event.preventDefault();
-      
-          // Get the OTP value from the input field
-          const otp = document.getElementById('otp').value;
-      
-          // Extract the reference number from the DOM
-          const referenceNo = document
-              .querySelector('#otpRequestResult p:nth-child(2)')
-              .innerText.split(': ')[1];
-      
-          try {
-              // Send a POST request to verify the OTP
-              const response = await fetch('/verify-otp', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({ referenceNo, otp }),
-              });
-      
-              // Parse the response as JSON
-              const result = await response.json();
-      
-              // Display the verification result in the DOM
-              document.getElementById('otpVerifyResult').innerHTML = `
-                  <h3>OTP Verification</h3>
-                  <p>Status Code: ${result.statusCode}</p>
-                  <p>Details: ${result.statusDetail}</p>
-              `;
-          } catch (error) {
-              // Handle errors and display a message in the DOM
-              document.getElementById('otpVerifyResult').innerHTML = `
-                  <p>Error verifying OTP</p>
-              `;
-              console.error('Error:', error);
-          }
+        event.preventDefault();
+        const otp = document.getElementById('otp').value;
+        const referenceNo = document.querySelector('#otpRequestResult p:nth-child(2)').innerText.split(': ')[1];
+        try {
+          const response = await fetch('/verify-otp', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ referenceNo, otp })
+          });
+          const result = await response.json();
+          document.getElementById('otpVerifyResult').innerHTML = \`
+            <h3>OTP Verification</h3>
+            <p>Status Code: \${result.statusCode}</p>
+            <p>Details: \${result.statusDetail}</p>
+            <p>Subscription Status: \${result.subscriptionStatus}</p>
+            <p>Subscriber ID: \${result.subscriberId}</p>
+          \`;
+        } catch (error) {
+          document.getElementById('otpVerifyResult').innerHTML = '<p>Error verifying OTP</p>';
+          console.error('Error:', error);
+        }
       }
-
-
       async function requestLocation() {
         try {
           const response = await fetch('/request-location');
@@ -381,7 +363,7 @@ app.get('/', (req, res) => {
             body: JSON.stringify({
               applicationId: "APP_066319",
               password: "c182dd009972ed36c0734af861b596dc",
-              subscriberId: "te:94767544774",      
+              subscriberId: "tel:+94767544774",  // Corrected format
               action: "1"
             })
           });
