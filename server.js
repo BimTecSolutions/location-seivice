@@ -202,16 +202,26 @@ app.get('/request-location', async (req, res) => {
   }
 });
 
-// Route for sending subscription action
+// Route for Sending Subscription Action
 app.post('/send-subscription-action', async (req, res) => {
+  // Extract subscriberId from the request body
+  const { subscriberId } = req.body;
+
+  // Check if subscriberId is provided
+  if (!subscriberId) {
+    return res.status(400).json({ error: 'subscriberId is required.' });
+  }
+
+  // Construct the payload
   const subscriptionActionPayload = {
-    "applicationId": "APP_008542",
-    "password": "d927d68199499f5e7114070bf88f9e6e",
-     subscriberId,
-    "action": "1"
+    applicationId: "APP_008542",
+    password: "d927d68199499f5e7114070bf88f9e6e",
+    subscriberId, // Using the extracted subscriberId
+    action: "1"
   };
 
   try {
+    // Send the subscription action request
     const subscriptionActionResponse = await axios.post('https://api.mspace.lk/subscription/send', subscriptionActionPayload, {
       headers: { 'Content-Type': 'application/json' },
       proxy: {
@@ -224,14 +234,16 @@ app.post('/send-subscription-action', async (req, res) => {
       }
     });
 
+    // Respond with the subscription action response
     const subscriptionActionData = subscriptionActionResponse.data;
     res.json(subscriptionActionData);
 
   } catch (error) {
-    console.error('Error sending subscription action:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error sending subscription action:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to send subscription action. Please try again.' });
   }
 });
+
 
 // Route for getting subscriber list
 app.post('/get-subscriber-list', async (req, res) => {
