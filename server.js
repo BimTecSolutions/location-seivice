@@ -137,9 +137,13 @@ app.get('/request-otp', async (req, res) => {
   }
 });
 
+// In-memory storage for subscriberId
+let subscriberIdStore = null;
+
 // Route for OTP Verification (Root URL "/verify-otp")
 app.post('/verify-otp', async (req, res) => {
   const { referenceNo, otp } = req.body;
+
   const otpVerifyPayload = {
     applicationId: 'APP_008542',  // MSpace Application ID
     password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
@@ -154,13 +158,20 @@ app.post('/verify-otp', async (req, res) => {
         host: parsedUrl.hostname,
         port: parsedUrl.port,
         auth: {
-          username: parsedUrl.username, // Fixie username
-          password: parsedUrl.password, // Fixie password
+          username: parsedUrl.username,
+          password: parsedUrl.password,
         }
       }
     });
 
     const otpVerifyData = otpVerifyResponse.data;
+
+    // Store the subscriberId in memory
+    if (otpVerifyData?.subscriberId) {
+      subscriberIdStore = otpVerifyData.subscriberId;
+      console.log('Stored subscriberId:', subscriberIdStore);
+    }
+
     res.json(otpVerifyData);  // Send the OTP verification data as JSON
 
   } catch (error) {
@@ -169,15 +180,56 @@ app.post('/verify-otp', async (req, res) => {
   }
 });
 
+// Route for sending subscription action
+app.post('/send-subscription-action', async (req, res) => {
+  // Check if the subscriberId is stored
+  if (!subscriberIdStore) {
+    return res.status(400).json({ error: 'Subscriber ID not found. Please verify OTP first.' });
+  }
+
+  const subscriptionActionPayload = {
+    applicationId: 'APP_008542',
+    password: 'd927d68199499f5e7114070bf88f9e6e',
+    subscriberId: subscriberIdStore,  // Use the stored subscriberId
+    action: '1'
+  };
+
+  try {
+    const subscriptionActionResponse = await axios.post('https://api.mspace.lk/subscription/send', subscriptionActionPayload, {
+      headers: { 'Content-Type': 'application/json' },
+      proxy: {
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        auth: {
+          username: parsedUrl.username,
+          password: parsedUrl.password,
+        }
+      }
+    });
+
+    const subscriptionActionData = subscriptionActionResponse.data;
+    res.json(subscriptionActionData);  // Send the response back to the client
+
+  } catch (error) {
+    console.error('Error sending subscription action:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 // Route for Location Request (Root URL "/request-location")
 app.get('/request-location', async (req, res) => {
+  // Check if the subscriberId is stored
+  if (!subscriberIdStore) {
+    return res.status(400).json({ error: 'Subscriber ID not found. Please verify OTP first.' });
+  }
+
   const locationRequestPayload = {
     applicationId: 'APP_008542',  // MSpace Application ID
     password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
     version: '2.0',  
-    subscriberId, // Example Subscriber ID
+    subscriberId: subscriberIdStore,  // Use the stored subscriberId
     serviceType: 'IMMEDIATE',
-
   };
 
   try {
@@ -202,47 +254,6 @@ app.get('/request-location', async (req, res) => {
   }
 });
 
-// Route for Sending Subscription Action
-app.post('/send-subscription-action', async (req, res) => {
-  // Extract subscriberId from the request body
-  const { subscriberId } = req.body;
-
-  // Check if subscriberId is provided
-  if (!subscriberId) {
-    return res.status(400).json({ error: 'subscriberId is required.' });
-  }
-
-  // Construct the payload
-  const subscriptionActionPayload = {
-    applicationId: "APP_008542",
-    password: "d927d68199499f5e7114070bf88f9e6e",
-    subscriberId, // Using the extracted subscriberId
-    action: "1"
-  };
-
-  try {
-    // Send the subscription action request
-    const subscriptionActionResponse = await axios.post('https://api.mspace.lk/subscription/send', subscriptionActionPayload, {
-      headers: { 'Content-Type': 'application/json' },
-      proxy: {
-        host: parsedUrl.hostname,
-        port: parsedUrl.port,
-        auth: {
-          username: parsedUrl.username,
-          password: parsedUrl.password,
-        }
-      }
-    });
-
-    // Respond with the subscription action response
-    const subscriptionActionData = subscriptionActionResponse.data;
-    res.json(subscriptionActionData);
-
-  } catch (error) {
-    console.error('Error sending subscription action:', error.response?.data || error.message);
-    res.status(500).json({ error: 'Failed to send subscription action. Please try again.' });
-  }
-});
 
 
 // Route for getting subscriber list
