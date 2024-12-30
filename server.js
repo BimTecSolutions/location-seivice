@@ -5,6 +5,7 @@ const app = express();
 
 app.use(express.json()); // To parse JSON body requests
 
+//convert all the request to HTTPS
 app.use((req, res, next) => {
   if (req.headers['x-forwarded-proto'] !== 'https') {
     res.redirect(`https://${req.headers.host}${req.url}`);
@@ -201,7 +202,7 @@ app.post('/send-subscription-action', async (req, res) => {
     password: 'd927d68199499f5e7114070bf88f9e6e',
     subscriberId: subscriberIdStore,  // Use the stored subscriberId
     action: '1'
-  };
+  }; 
 
   try {
     const subscriptionActionResponse = await axios.post('https://api.mspace.lk/subscription/send', subscriptionActionPayload, {
