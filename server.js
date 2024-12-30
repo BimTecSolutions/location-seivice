@@ -175,7 +175,7 @@ app.get('/request-location', async (req, res) => {
     applicationId: 'APP_008542',  // MSpace Application ID
     password: 'd927d68199499f5e7114070bf88f9e6e',  // MSpace password
     version: '2.0',  
-    subscriberId: 'tel:YzYzNWNiMGMzY2JiZmExNTQzYWJmODI5M2U5MDQzMDcyMWZmY2I2NzczZmYwZWU5OTYzNGFkNmQ3OWYwOWZlYzptb2JpdGVs',  // Example Subscriber ID
+    subscriberId, // Example Subscriber ID
     serviceType: 'IMMEDIATE',
 
   };
@@ -207,7 +207,7 @@ app.post('/send-subscription-action', async (req, res) => {
   const subscriptionActionPayload = {
     "applicationId": "APP_008542",
     "password": "d927d68199499f5e7114070bf88f9e6e",
-    "subscriberId": "YzYzNWNiMGMzY2JiZmExNTQzYWJmODI5M2U5MDQzMDcyMWZmY2I2NzczZmYwZWU5OTYzNGFkNmQ3OWYwOWZlYzptb2JpdGVs",
+     subscriberId,
     "action": "1"
   };
 
