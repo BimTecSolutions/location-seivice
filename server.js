@@ -5,15 +5,6 @@ const app = express();
 
 app.use(express.json()); // To parse JSON body requests
 
-//convert all the request to HTTPS
-app.use((req, res, next) => {
-  if (req.headers['x-forwarded-proto'] !== 'https') {
-    res.redirect(`https://${req.headers.host}${req.url}`);
-  } else {
-    next();
-  }
-});
-
 
 // Get Fixie URL from environment variables (for static IP)
 const fixieUrl = process.env.FIXIE_URL;
