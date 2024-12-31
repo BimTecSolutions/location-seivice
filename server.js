@@ -294,6 +294,7 @@ app.get('/', (req, res) => {
   res.send(`
     <h1>Welcome to Base Size Query Service</h1>
     <p>Use the following endpoints to get base sizes and subscription status:</p>
+    <p>${subscriberId}</p>
     <ul>
       <li><a href="/mobitel">Mobitel Base Size</a></li>
       <li><a href="/dialog">Dialog Base Size</a></li>
